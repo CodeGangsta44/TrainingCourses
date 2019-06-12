@@ -28,6 +28,8 @@ public interface MessageConstants {
      String INPUT_HOME_ADDR_BUILDING_NUMBER = "input.home.addr.building.number";
      String INPUT_HOME_ADDR_APARTMENT_NUMBER = "input.home.addr.apartment.number";
 
+     String INPUT_MISMATCH = "input.mismatch";
+
 
      String UNACCEPTABLE_SURNAME = "unacceptable.surname";
      String UNACCEPTABLE_NAME = "unacceptable.name";

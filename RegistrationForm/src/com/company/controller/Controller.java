@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 import com.company.model.*;
 import com.company.view.*;
+import java.util.InputMismatchException;
 import static com.company.view.MessageConstants.*;
 import static com.company.controller.PatternConstants.*;
 
@@ -23,7 +24,7 @@ public class Controller {
         this.view = view;
 
         reader = new ConsoleReader();
-        locale = Locale.getDefault();
+        locale = new Locale("en");
         view.changeResource(locale);
         resourceBundle = ResourceBundle.getBundle(RESOURCE_NAME, locale);
     }
@@ -36,7 +37,17 @@ public class Controller {
         while (!userLeft) {
             view.printLine(view.getString(MENU));
 
-            switch (reader.readInt()){
+            int answer;
+
+            try {
+                answer = reader.readInt();
+            } catch(InputMismatchException e){
+                view.printLine(view.getString(INPUT_MISMATCH));
+                reader.resetReader();
+                continue;
+            }
+
+            switch (answer){
                 case 1:
                     reader.resetReader();
                     addSubscriber();
@@ -191,7 +202,7 @@ public class Controller {
 
         switch (reader.readInt()){
             case 1:
-                locale = Locale.getDefault();
+                locale = new Locale("en");
                 break;
             case 2:
                 locale = new Locale("ua");
