@@ -9,10 +9,10 @@ public class Subscriber {
     private String patronymic;
     private String fullName;
 
-    private String nickname;
+    private String login;
     private String comment;
 
-    public GroupName groupName;
+    private GroupName groupName;
 
     private String homePhoneNumber;
     private String mobilePhoneNumber;
@@ -64,12 +64,12 @@ public class Subscriber {
         fullName = surname + " " + name.charAt(0) + '.';
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getLogin() {
+        return login;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setLogin(String login) {
+        this.login = login;
         updateLastModificationDate();
     }
 
