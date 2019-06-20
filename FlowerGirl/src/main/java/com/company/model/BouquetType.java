@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Complex enum of different types of bouquets.
+ *
+ * @author Roman Dovhopoliuk
+ * @version 1.0.0
+ */
 public enum BouquetType {
     EXPEENCIVE(new Flower("Bluebell", 100, 90, 25),
                new Flower("Bluebell", 100, 100, 25),
@@ -35,10 +41,18 @@ public enum BouquetType {
 
     private List<BouquetComponent> components;
 
+    /**
+     * Constructor for creating new object
+     * @param components - set of components of the bouquet
+     */
     private BouquetType(BouquetComponent... components) {
         this.components = new ArrayList<>(Arrays.asList(components));
     }
 
+    /**
+     * Method for getting list of all the bouquet`s components
+     * @return list of bouquet`s components
+     */
     public List<BouquetComponent> getComponents() {
         return this.components;
     }
