@@ -1,5 +1,13 @@
 package com.company.view;
 
+
+/**
+ * An interface with key constants
+ * for `message` resource bundle.
+ *
+ * @author Roman Dovhopoliuk
+ * @version 1.0.0
+ */
 public interface MessageConstants {
     String GREETING = "greeting";
     String FAREWELL = "farewell";
@@ -13,5 +21,7 @@ public interface MessageConstants {
      String INPUT_UPPER_BOUND = "input.bound.upper";
 
      String INPUT_MISMATCH = "input.mismatch";
+
+     String INPUT_BOUNDS_MISMATCH = "input.bounds.mismatch";
 
 }
