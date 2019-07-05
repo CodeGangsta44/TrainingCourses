@@ -1,14 +1,19 @@
 package ua.dovhopoliuk.springtask.exceptions;
 
-public class LoginNotUniqueException extends RuntimeException {
-    private String login;
+import ua.dovhopoliuk.springtask.dto.RegNoteDTO;
 
-    public LoginNotUniqueException(String message, String login) {
+public class LoginNotUniqueException extends RuntimeException {
+    private RegNoteDTO note;
+
+    public LoginNotUniqueException(String message) {
         super(message);
-        this.login = login;
     }
 
-    public String getLogin() {
-        return login;
+    public void setNote(RegNoteDTO note) {
+        this.note = note;
+    }
+
+    public RegNoteDTO getNote() {
+        return note;
     }
 }

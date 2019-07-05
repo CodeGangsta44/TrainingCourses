@@ -4,11 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ua.dovhopoliuk.springtask.dto.RegNoteDTO;
+import ua.dovhopoliuk.springtask.entity.Role;
 import ua.dovhopoliuk.springtask.exceptions.LoginNotUniqueException;
 import ua.dovhopoliuk.springtask.service.UserService;
 import ua.dovhopoliuk.springtask.entity.User;
+import java.util.Arrays;
 
 @Slf4j
 @RestController
@@ -31,27 +34,32 @@ public class RegFormController {
                 .patronymic(note.getPatronymic())
                 .login(note.getLogin())
                 .email(note.getEmail())
-                .hashCodeOfPassword(note.getPassword().hashCode())
+                .password(new BCryptPasswordEncoder().encode(note.getPassword()))
+                .roles(Arrays.asList(Role.USER, Role.SPEAKER))
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
                 .build();
 
         log.info(user.toString());
 
-        userService.saveNewUser(user);
+        try {
+            userService.saveNewUser(user);
+        } catch (LoginNotUniqueException ex) {
+            note.setLogin("");
+            ex.setNote(note);
+            throw ex;
+        }
 
-//        try {
-//            userService.saveNewUser(user);
-//        } catch (Exception e) {
-//            log.warn(e.getMessage());
-//
-//        }
     }
 
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
+    public ResponseEntity<RuntimeException> handleRuntimeException(RuntimeException ex) {
         log.warn(ex.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body("{\"message\": \"" + ex.getMessage() + "\"}");
+                .body(ex);
     }
 }

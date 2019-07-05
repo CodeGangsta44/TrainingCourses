@@ -1,20 +1,32 @@
+const setColorInputLabel = (name, color) => {
+    console.log(typeof name);
+    let resultString = 'input' + name.charAt(0).toUpperCase() + name.slice(1) + 'Label';
+    document.getElementById(resultString).style.color = color;
+};
+
+const setListenerForInput = (name, scope) => {
+    console.log(name);
+    let resultString = 'exampleInput' +  name.charAt(0).toUpperCase() + name.slice(1);
+    let element = document.getElementById(resultString);
+    console.log(resultString);
+    element.addEventListener('input', () => {
+        setColorInputLabel(name, 'black');
+        scope.message = '';
+    })
+};
+
 angular.module("registration_form",[])
     .controller("AppCtrl", function ($scope, $http) {
         $scope.auth = {};
+
         let resultMessageEl = document.getElementById('resultMessage');
-        let exampleInputNameEl = document.getElementById('exampleInputName');
-        let exampleInputLoginEl = document.getElementById('exampleInputLogin');
 
 
-        let inputNameLabel = document.getElementById('inputNameLabel');
-        let inputLoginLabel = document.getElementById('inputLoginLabel');
-
-        exampleInputLoginEl.addEventListener('input', () => {
-            inputNameLabel.style.color = 'black';
-            inputLoginLabel.style.color = 'black';
-            $scope.message = '';
-    });
         $scope.sendForm = function(auth){
+
+            Object.keys($scope.auth)
+                .forEach(key => setListenerForInput(key, $scope));
+
             $http({
                 method: "POST",
                 url: "/api/registration",
@@ -22,16 +34,30 @@ angular.module("registration_form",[])
                 headers: { "Content-Type" : "application/x-www-form-urlencoded" }
             }).then(
                 (data) => {
+                    console.log(data);
+                    Object.keys($scope.auth)
+                        .forEach(key => {
+                            setColorInputLabel(key, 'black');
+                            $scope.auth[key] = '';
+                        });
+
                 resultMessageEl.style.color = 'green';
-            $scope.message = 'Successfully registered';
-            exampleInputNameEl.value = '';
-            exampleInputLoginEl.value = '';
-            inputLoginLabel.style.color = 'black';
+                $scope.message = 'Successfully registered';
         },
             (error) => {
-                console.log(error.data);
+
+                let note = error.data.note;
+                console.log(error);
+
+                Object.keys(note)
+                    .forEach(
+                        key => {
+                            $scope.auth[key] = note[key];
+                            if (note[key] === '') setColorInputLabel(key, 'red');
+                        });
+
                 resultMessageEl.style.color = 'red';
-                inputLoginLabel.style.color = 'red';
+
                 $scope.message = error.data.message;
             }
         );
