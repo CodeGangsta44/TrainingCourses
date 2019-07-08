@@ -2,6 +2,8 @@ package ua.dovhopoliuk.springtask.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,15 +20,17 @@ import java.util.Arrays;
 @RequestMapping(value = "/api/registration")
 public class RegFormController {
     private final UserService userService;
+    private final ReloadableResourceBundleMessageSource messageSource;
 
     @Autowired
-    public RegFormController(UserService userService) {
+    public RegFormController(UserService userService, ReloadableResourceBundleMessageSource messageSource) {
         this.userService = userService;
+        this.messageSource = messageSource;
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(method = RequestMethod.POST)
-    public void register(RegNoteDTO note){
+    @RequestMapping(method = RequestMethod.POST, produces="text/plain")
+    public String register(RegNoteDTO note){
         log.info("{}", note);
         User user = User.builder()
                 .surname(note.getSurname())
@@ -51,6 +55,10 @@ public class RegFormController {
             ex.setNote(note);
             throw ex;
         }
+
+        return messageSource.getMessage("registration.success",
+                null,
+                LocaleContextHolder.getLocale());
 
     }
 

@@ -41,13 +41,14 @@ angular.module("registration_form",[])
                             $scope.auth[key] = '';
                         });
 
-                resultMessageEl.style.color = 'green';
-                $scope.message = 'Successfully registered';
+                resultMessageEl.className = 'alert alert-success';
+                resultMessageEl.innerText = data.data;
+                resultMessageEl.style.visibility='visible';
         },
             (error) => {
+                console.log(error);
 
                 let note = error.data.note;
-                console.log(error);
 
                 Object.keys(note)
                     .forEach(
@@ -56,9 +57,10 @@ angular.module("registration_form",[])
                             if (note[key] === '') setColorInputLabel(key, 'red');
                         });
 
-                resultMessageEl.style.color = 'red';
-
-                $scope.message = error.data.message;
+                resultMessageEl.className = 'alert alert-warning';
+                resultMessageEl.innerText = error.data.localizedMessage;
+                // $scope.message = error.data.localizedMessage;
+                resultMessageEl.style.visibility='visible';
             }
         );
         }

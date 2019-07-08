@@ -14,7 +14,7 @@ public class PageController {
 
     @RequestMapping("/registration")
     public String registrationPage() {
-        return "reg_form.html";
+        return "registration";
     }
 
     @RequestMapping("/login")
@@ -27,8 +27,8 @@ public class PageController {
         return "login";
     }
 
-    @RequestMapping("/all_user")
+    @RequestMapping("/all_users")
     public String userPage() {
-        return "all_users.html";
+        return "all_users";
     }
 }

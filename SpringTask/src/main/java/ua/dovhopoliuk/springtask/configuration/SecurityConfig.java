@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ua.dovhopoliuk.springtask.service.UserService;
 
 @Configuration
@@ -23,11 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/js/*", "/registration", "/api/registration").permitAll()
                 .antMatchers("/").authenticated()
-                .antMatchers("/api/all_users", "/all_users.html", "/all_user").hasRole("ADMIN")
+                .antMatchers("/api/all_users", "/all_users").hasAuthority("ADMIN")
                 .and()
                 .formLogin().loginPage("/login").usernameParameter("login").permitAll()
                 .and()
-                .logout().permitAll()
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
                 .and()
                 .csrf().disable();
 
@@ -40,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(bcryptPasswordEncoder());
+        auth.userDetailsService(userService)
+                .passwordEncoder(bcryptPasswordEncoder());
     }
 }

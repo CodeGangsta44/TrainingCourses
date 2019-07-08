@@ -22,7 +22,7 @@ import java.util.List;
 
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -37,7 +37,6 @@ public class User implements UserDetails {
     private String email;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-
     private List<Role> roles;
 
     @Column(nullable = false)

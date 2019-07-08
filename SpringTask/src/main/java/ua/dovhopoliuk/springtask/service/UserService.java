@@ -1,6 +1,9 @@
 package ua.dovhopoliuk.springtask.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,9 +22,12 @@ import java.util.List;
 @Service
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final ReloadableResourceBundleMessageSource messageSource;
 
-    public UserService(UserRepository userRepository) {
+    @Autowired
+    public UserService(UserRepository userRepository, ReloadableResourceBundleMessageSource messageSource) {
         this.userRepository = userRepository;
+        this.messageSource = messageSource;
     }
 
     public UsersDTO getAllUsers() {
@@ -29,7 +35,11 @@ public class UserService implements UserDetailsService {
         List<User> users = userRepository.findAll();
 
         if (users.size() == 0) {
-            throw new EmptyUserListException("No users is system");
+            String localizedMessage = messageSource.getMessage("exception.user.list.empty",
+                    null,
+                    LocaleContextHolder.getLocale());
+
+            throw new EmptyUserListException("No users is system", localizedMessage);
         } else {
             log.info("Returning list of users");
             return new UsersDTO(users);
@@ -70,7 +80,11 @@ public class UserService implements UserDetailsService {
 
             if (errorCode == 1062) {
                 log.warn("Login already exists");
-                throw new LoginNotUniqueException("Entered login is not unique, please try again");
+                String localizedMessage = messageSource.getMessage("exception.login.not.unique",
+                        null,
+                        LocaleContextHolder.getLocale());
+
+                throw new LoginNotUniqueException("Entered login is not unique, please try again", localizedMessage);
             }
 
             throw ex;
