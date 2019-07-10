@@ -46,23 +46,6 @@ public class UserService implements UserDetailsService {
         }
     }
 
-//    public User getUser (UserDTO userDTO){
-//        log.info("Get user: " + userDTO.toString());
-//
-//        User user = userRepository.findByLogin(userDTO.getLogin());
-//
-//        if (user == null) {
-//            throw new NoSuchUserException("No user with such login", userDTO.getLogin());
-//        }
-//
-//        if (!userDTO.getPassword().equals(user.getPassword())) {
-//            throw new WrongPasswordException("Wrong password for this user", userDTO.getLogin());
-//        }
-//
-//        log.info("Returning user: " + user.toString());
-//        return user;
-//    }
-
     public void saveNewUser (User user){
         log.info("SAVING USER");
 

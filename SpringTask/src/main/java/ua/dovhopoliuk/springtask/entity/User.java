@@ -1,13 +1,13 @@
 package ua.dovhopoliuk.springtask.entity;
 
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -17,12 +17,12 @@ import java.util.List;
 @ToString
 
 @Entity
-@Table( name="users",
-        uniqueConstraints={@UniqueConstraint(columnNames={"login"})})
+@Table( name = "users",
+        uniqueConstraints = {@UniqueConstraint(columnNames={"login"})})
 
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -38,6 +38,13 @@ public class User implements UserDetails {
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     private List<Role> roles;
+
+    @ManyToMany
+    @JoinTable(name = "users_conferences",
+            joinColumns = {@JoinColumn( name = "user_id")},
+            inverseJoinColumns = { @JoinColumn(name = "conference_id") }
+    )
+    private Set<Conference> planedConferences;
 
     @Column(nullable = false)
     private String password;

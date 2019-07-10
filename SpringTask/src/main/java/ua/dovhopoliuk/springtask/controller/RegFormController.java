@@ -14,6 +14,7 @@ import ua.dovhopoliuk.springtask.exceptions.LoginNotUniqueException;
 import ua.dovhopoliuk.springtask.service.UserService;
 import ua.dovhopoliuk.springtask.entity.User;
 import java.util.Arrays;
+import java.util.HashSet;
 
 @Slf4j
 @RestController
@@ -40,6 +41,7 @@ public class RegFormController {
                 .email(note.getEmail())
                 .password(new BCryptPasswordEncoder().encode(note.getPassword()))
                 .roles(Arrays.asList(Role.USER, Role.SPEAKER))
+                .planedConferences(new HashSet<>())
                 .accountNonExpired(true)
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
