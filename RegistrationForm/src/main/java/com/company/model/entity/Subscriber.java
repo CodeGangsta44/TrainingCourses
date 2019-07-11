@@ -1,9 +1,12 @@
-package com.company.model;
+package com.company.model.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
 public class Subscriber {
+    private int id;
+
     private String surname;
     private String name;
     private String patronymic;
@@ -22,11 +25,19 @@ public class Subscriber {
 
     private Address address;
 
-    private Date dateOfEntryIntoBook;
-    private Date dateOfLastModification;
+    private LocalDate dateOfEntryIntoBook;
+    private LocalDate dateOfLastModification;
 
     private void updateLastModificationDate() {
-        dateOfLastModification = new Date();
+        dateOfLastModification = LocalDate.now();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSurname() {
@@ -136,17 +147,21 @@ public class Subscriber {
         updateLastModificationDate();
     }
 
-    public Date getDateOfEntryIntoBook() {
+    public LocalDate getDateOfEntryIntoBook() {
         return dateOfEntryIntoBook;
     }
 
-    public void setDateOfEntryIntoBook(Date dateOfEntryIntoBook) {
+    public void setDateOfEntryIntoBook(LocalDate dateOfEntryIntoBook) {
         this.dateOfEntryIntoBook = dateOfEntryIntoBook;
         updateLastModificationDate();
     }
 
-    public Date getDateOfLastModification() {
+    public LocalDate getDateOfLastModification() {
         return dateOfLastModification;
+    }
+
+    public void setDateOfLastModification(LocalDate dateOfLastModification) {
+        this.dateOfLastModification = dateOfLastModification;
     }
 
     public GroupName getGroupName() {

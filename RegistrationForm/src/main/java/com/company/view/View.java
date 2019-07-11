@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 public class View {
 
     private ResourceBundle resourceBundle;
-    private static final String RESOURCE_NAME = "property.message";
+    private static final String RESOURCE_NAME = "message";
 
     public View() {
         resourceBundle = ResourceBundle.getBundle(RESOURCE_NAME, Locale.getDefault());

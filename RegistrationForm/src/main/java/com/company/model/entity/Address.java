@@ -1,19 +1,30 @@
-package com.company.model;
+package com.company.model.entity;
 
 public class Address {
+    private int id;
+
     private String index;
     private String city;
     private String street;
     private String buildingNumber;
     private String apartmentNumber;
 
+    public Address(){}
 
-    public Address (String index, String city, String street, String buildingNumber, String aprtmentNumber) {
+    public Address(String index, String city, String street, String buildingNumber, String apartmentNumber) {
         this.index = index;
         this.city = city;
         this.street = street;
         this.buildingNumber = buildingNumber;
-        this.apartmentNumber = aprtmentNumber;
+        this.apartmentNumber = apartmentNumber;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getIndex() {
@@ -48,12 +59,12 @@ public class Address {
         this.buildingNumber = buildingNumber;
     }
 
-    public String getAprtmentNumber() {
+    public String getApartmentNumber() {
         return apartmentNumber;
     }
 
-    public void setAprtmentNumber(String aprtmentNumber) {
-        this.apartmentNumber = aprtmentNumber;
+    public void setApartmentNumber(String apartmentNumber) {
+        this.apartmentNumber = apartmentNumber;
     }
 
 }

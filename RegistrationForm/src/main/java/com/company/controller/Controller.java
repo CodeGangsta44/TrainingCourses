@@ -4,6 +4,9 @@ import java.util.ResourceBundle;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import com.company.model.*;
+import com.company.model.entity.Address;
+import com.company.model.entity.GroupName;
+import com.company.model.entity.Subscriber;
 import com.company.view.*;
 import java.util.InputMismatchException;
 import static com.company.view.MessageConstants.*;
@@ -12,7 +15,7 @@ import static com.company.controller.PatternConstants.*;
 public class Controller {
 
     private ResourceBundle resourceBundle;
-    private static final String RESOURCE_NAME = "property.regexp";
+    private static final String RESOURCE_NAME = "regexp";
     private Locale locale;
 
     private Model model;

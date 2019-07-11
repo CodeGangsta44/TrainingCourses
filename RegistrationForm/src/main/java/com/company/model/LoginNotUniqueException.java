@@ -1,6 +1,6 @@
 package com.company.model;
 
-public class LoginNotUniqueException extends Exception {
+public class LoginNotUniqueException extends RuntimeException {
     private String login;
 
     public LoginNotUniqueException(String message, String login) {
