@@ -1,10 +1,7 @@
 package ua.dovhopoliuk.springtask.dto;
 
 import lombok.*;
-import ua.dovhopoliuk.springtask.entity.Role;
 import ua.dovhopoliuk.springtask.entity.User;
-
-import java.util.Set;
 
 @Getter
 @Setter
@@ -12,20 +9,16 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @ToString
-public class UserDTO {
+public class RegisteredGuestDTO {
     private Long id;
+    private String login;
     private String surname;
     private String name;
-    private String patronymic;
-    private String login;
-    private Set<Role> roles;
 
-    public UserDTO(User user) {
+    public RegisteredGuestDTO(User user) {
         this.id = user.getId();
+        this.login = user.getLogin();
         this.surname = user.getSurname();
         this.name = user.getName();
-        this.patronymic = user.getPatronymic();
-        this.login = user.getLogin();
-        this.roles = user.getRoles();
     }
 }

@@ -31,4 +31,14 @@ public class PageController {
     public String userPage() {
         return "all_users";
     }
+
+    @RequestMapping("/conferences")
+    public String conferencesPage() {
+        return "conferences";
+    }
+
+    @RequestMapping("/reports")
+    public String reportsPage() {
+        return "reports";
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.NestedExceptionUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +18,8 @@ import ua.dovhopoliuk.springtask.entity.*;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -30,7 +33,7 @@ public class UserService implements UserDetailsService {
         this.messageSource = messageSource;
     }
 
-    public UsersDTO getAllUsers() {
+    public Set<UserDTO> getAllUsers() {
         log.info("Get list of users");
         List<User> users = userRepository.findAll();
 
@@ -42,7 +45,7 @@ public class UserService implements UserDetailsService {
             throw new EmptyUserListException("No users is system", localizedMessage);
         } else {
             log.info("Returning list of users");
-            return new UsersDTO(users);
+            return users.stream().map(UserDTO::new).collect(Collectors.toSet());
         }
     }
 
@@ -75,13 +78,34 @@ public class UserService implements UserDetailsService {
 
     }
 
+    public void saveExistingUser(User user) {
+        userRepository.save(user);
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findUserById(id);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDetails user = userRepository.findByLogin(username);
+        UserDetails user = userRepository.findUserByLogin(username);
         if (user != null) {
             return user;
         } else {
             throw new UsernameNotFoundException(username);
         }
+    }
+
+    public Set<ConferenceDTO> getPlannedConferencesById(Long id) {
+        return userRepository.findUserById(id).getPlanedConferences().stream()
+                .map(ConferenceDTO::new).collect(Collectors.toSet());
+    }
+
+    public Long getIdOfCurrentUser() {
+        return ((User)(SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getId();
+    }
+
+    public User getCurrentUser() {
+        return userRepository.findUserById(getIdOfCurrentUser());
     }
 }

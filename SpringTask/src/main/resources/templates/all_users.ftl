@@ -31,7 +31,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="item in users">
+                        <tr ng-repeat="item in users | orderBy:'id'">
                             <td>{{item.id}}</td>
                             <td>{{item.surname}}</td>
                             <td>{{item.name}}</td>

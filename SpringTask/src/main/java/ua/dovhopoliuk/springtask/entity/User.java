@@ -1,5 +1,6 @@
 package ua.dovhopoliuk.springtask.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,12 +10,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+@Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
+@ToString(exclude = "planedConferences")
+@EqualsAndHashCode(exclude = "planedConferences")
 
 @Entity
 @Table( name = "users",
@@ -37,13 +40,14 @@ public class User implements UserDetails {
     private String email;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    private List<Role> roles;
+    private Set<Role> roles;
 
-    @ManyToMany
-    @JoinTable(name = "users_conferences",
-            joinColumns = {@JoinColumn( name = "user_id")},
-            inverseJoinColumns = { @JoinColumn(name = "conference_id") }
-    )
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "registeredGuests")
+//    @JoinTable(name = "users_conferences",
+//            joinColumns = {@JoinColumn( name = "user_id")},
+//            inverseJoinColumns = { @JoinColumn(name = "conference_id") }
+//    )
     private Set<Conference> planedConferences;
 
     @Column(nullable = false)

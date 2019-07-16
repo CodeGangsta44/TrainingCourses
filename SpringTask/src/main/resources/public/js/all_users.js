@@ -4,10 +4,12 @@ angular.module("all_users", [])
 
         let resultMessageEl = document.getElementById('resultMessage');
 
-        $http.get("/api/all_users")
+        console.log("HERE");
+        $http.get("/api/users")
             .then(
                 (data)=>{
-                $scope.users = data.data.users;
+                    console.log(data);
+                $scope.users = data.data;
             },
                 (error) => {
                 console.log(error.data);

@@ -15,6 +15,7 @@ import ua.dovhopoliuk.springtask.service.UserService;
 import ua.dovhopoliuk.springtask.entity.User;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 @RestController
@@ -32,6 +33,10 @@ public class RegFormController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST, produces="text/plain")
     public String register(RegNoteDTO note){
+        Set<Role> roles = new HashSet<>();
+        roles.add(Role.USER);
+        roles.add(Role.SPEAKER);
+
         log.info("{}", note);
         User user = User.builder()
                 .surname(note.getSurname())
@@ -40,7 +45,7 @@ public class RegFormController {
                 .login(note.getLogin())
                 .email(note.getEmail())
                 .password(new BCryptPasswordEncoder().encode(note.getPassword()))
-                .roles(Arrays.asList(Role.USER, Role.SPEAKER))
+                .roles(roles)
                 .planedConferences(new HashSet<>())
                 .accountNonExpired(true)
                 .accountNonLocked(true)
