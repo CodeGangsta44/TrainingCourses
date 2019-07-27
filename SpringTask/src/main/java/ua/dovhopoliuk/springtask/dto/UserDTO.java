@@ -18,6 +18,7 @@ public class UserDTO {
     private String name;
     private String patronymic;
     private String login;
+    private String email;
     private Set<Role> roles;
 
     public UserDTO(User user) {
@@ -26,6 +27,7 @@ public class UserDTO {
         this.name = user.getName();
         this.patronymic = user.getPatronymic();
         this.login = user.getLogin();
+        this.email = user.getEmail();
         this.roles = user.getRoles();
     }
 }

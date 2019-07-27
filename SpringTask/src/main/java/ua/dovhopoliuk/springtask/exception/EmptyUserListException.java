@@ -1,4 +1,4 @@
-package ua.dovhopoliuk.springtask.exceptions;
+package ua.dovhopoliuk.springtask.exception;
 
 public class EmptyUserListException extends RuntimeException {
     private String localizedMessage;

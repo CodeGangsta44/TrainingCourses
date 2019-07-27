@@ -12,6 +12,7 @@ import ua.dovhopoliuk.springtask.repository.ConferenceRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,15 +21,18 @@ public class ConferenceService {
     private ConferenceRepository conferenceRepository;
     private UserService userService;
     private ReportService reportService;
+    private ReportRequestService reportRequestService;
 
     @Autowired
     ConferenceService(ConferenceRepository conferenceRepository,
                       UserService userService,
-                      ReportService reportService) {
+                      ReportService reportService,
+                      ReportRequestService reportRequestService) {
 
         this.conferenceRepository = conferenceRepository;
         this.userService = userService;
         this.reportService = reportService;
+        this.reportRequestService = reportRequestService;
     }
 
     public List<Conference> getAllConferences() {
@@ -54,6 +58,9 @@ public class ConferenceService {
     }
 
     private void copyUpdatableFields(Conference oldConf, Conference newConf) {
+
+        // TODO null -> @Optional, Object.isNull()
+
         if (newConf.getTopic() != null) {
             oldConf.setTopic(newConf.getTopic());
         }
@@ -84,10 +91,8 @@ public class ConferenceService {
 
         if (!isUserRegistered(conference)) {
             conference.getRegisteredGuests().add(user);
-            user.getPlanedConferences().add(conference);
         } else {
             conference.getRegisteredGuests().remove(user);
-            user.getPlanedConferences().remove(conference);
         }
 
         conferenceRepository.save(conference);
@@ -114,15 +119,14 @@ public class ConferenceService {
         return conferenceRepository.findConferenceById(conferenceId).getReports();
     }
 
-    public void addReport(Long conferenceId, Report report) {
+    public void requestReport(Long conferenceId, Report report) {
         Conference conference = conferenceRepository.findConferenceById(conferenceId);
         User speaker = userService.getCurrentUser();
 
         report.setSpeaker(speaker);
         reportService.saveReport(report);
-        conference.getReports().add(report);
 
-        conferenceRepository.save(conference);
+        reportRequestService.createReportRequest(report, conference);
     }
 
     public void deleteReport(Long conferenceId, Long reportId) {

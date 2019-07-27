@@ -41,11 +41,16 @@
                     <@spring.message "button.login"/>
                 </button>
             </form>
-            <span style="float: right">
+            <div class="alert alert-info" role="alert">
+                <a href="/registration"><@spring.message "title.registration"/></a>
+
+                <span style="float: right">
                         <a href="?lang=en"><@spring.message "language.en"/></a>
                         |
                         <a href="?lang=ua"><@spring.message "language.ua"/></a>
-             </span>
+                </span>
+            </div>
+
         </div>
     </div>
 </div>

@@ -1,4 +1,4 @@
-package ua.dovhopoliuk.springtask.exceptions;
+package ua.dovhopoliuk.springtask.exception;
 
 import ua.dovhopoliuk.springtask.dto.RegNoteDTO;
 

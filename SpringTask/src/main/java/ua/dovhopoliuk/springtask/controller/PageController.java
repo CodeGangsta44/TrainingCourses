@@ -41,4 +41,9 @@ public class PageController {
     public String reportsPage() {
         return "reports";
     }
+
+    @RequestMapping("/")
+    public String homePage() {
+        return "home";
+    }
 }

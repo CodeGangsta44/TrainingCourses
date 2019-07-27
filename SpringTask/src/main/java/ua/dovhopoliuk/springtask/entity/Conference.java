@@ -42,9 +42,8 @@ public class Conference {
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Report> reports;
 
-//    @ManyToMany(mappedBy = "planedConferences")
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_conferences",
         joinColumns = {@JoinColumn( name = "conference_id")},
         inverseJoinColumns = { @JoinColumn(name = "user_id") }

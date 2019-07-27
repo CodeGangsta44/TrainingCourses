@@ -29,7 +29,7 @@ angular.module("registration_form",[])
 
             $http({
                 method: "POST",
-                url: "/api/registration",
+                url: "/api/users",
                 data: $.param(auth),
                 headers: { "Content-Type" : "application/x-www-form-urlencoded" }
             }).then(

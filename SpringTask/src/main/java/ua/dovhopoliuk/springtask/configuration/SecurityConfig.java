@@ -3,6 +3,7 @@ package ua.dovhopoliuk.springtask.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,7 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/js/*", "/registration", "/api/registration", "/api/conferences").permitAll()
+                .antMatchers("/js/*", "/registration", "/api/conferences").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/users").permitAll()
                 .antMatchers("/", "/api/users/*/").authenticated()
                 .antMatchers("/api/users", "/all_users").hasAuthority("ADMIN")
                 .and()

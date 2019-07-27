@@ -8,8 +8,6 @@ import ua.dovhopoliuk.springtask.dto.RegisteredGuestDTO;
 import ua.dovhopoliuk.springtask.dto.ReportDTO;
 import ua.dovhopoliuk.springtask.entity.Conference;
 import ua.dovhopoliuk.springtask.entity.Report;
-import ua.dovhopoliuk.springtask.entity.User;
-import ua.dovhopoliuk.springtask.repository.ConferenceRepository;
 import ua.dovhopoliuk.springtask.service.ConferenceService;
 
 import java.time.LocalDateTime;
@@ -44,9 +42,6 @@ public class ConferenceController {
     public void addNewConference(ConferenceDTO conferenceDTO) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
-        System.out.println("CREATING CONFERENCE");
-        System.out.println(conferenceDTO.toString());
-
         Conference conference = Conference.builder()
                 .topic(conferenceDTO.getTopic())
                 .eventDateTime(LocalDateTime.parse(conferenceDTO.getEventDateTime(), formatter))
@@ -75,20 +70,9 @@ public class ConferenceController {
 
     @GetMapping(value = "{conferenceId}/changeRegistration")
         public FullConferenceDTO changeRegistration(@PathVariable Long conferenceId) {
-        System.out.println("REGISTRATION");
         conferenceService.changeRegistration(conferenceId);
         return getConferenceById(conferenceId);
     }
-
-//    @PostMapping(value = "{conferenceId}/registeredGuests/{userId}")
-//    public void registerUser(@PathVariable Long conferenceId, @PathVariable Long userId) {
-//        conferenceService.registerUser(conferenceId, userId);
-//    }
-
-//    @DeleteMapping(value = "{conferenceId}/registeredGuests/{userId}")
-//    public void cancelRegistrationOfUser(@PathVariable Long conferenceId, @PathVariable Long userId) {
-//        conferenceService.cancelRegistrationOfUser(conferenceId, userId);
-//    }
 
     @GetMapping(value = "{conferenceId}/reports")
     public Set<ReportDTO> getReports(@PathVariable Long conferenceId) {
@@ -98,13 +82,9 @@ public class ConferenceController {
 
     @PostMapping(value = "{conferenceId}/addReport")
     public void addReport(@PathVariable Long conferenceId, Report report) {
-        conferenceService.addReport(conferenceId, report);
+        conferenceService.requestReport(conferenceId, report);
     }
 
-//    @PostMapping(value = "{conferenceId}/reports/{reportId}")
-//    public void addReport(@PathVariable Long conferenceId, @PathVariable Long reportId) {
-//        conferenceService.addReport(conferenceId, reportId);
-//    }
 
     @DeleteMapping(value = "{conferenceId}/reports/{reportId}")
     public void deleteReport(@PathVariable Long conferenceId, @PathVariable Long reportId) {

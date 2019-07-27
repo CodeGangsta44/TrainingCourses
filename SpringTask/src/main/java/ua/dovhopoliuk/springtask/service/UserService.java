@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ua.dovhopoliuk.springtask.exceptions.EmptyUserListException;
-import ua.dovhopoliuk.springtask.exceptions.LoginNotUniqueException;
+import ua.dovhopoliuk.springtask.exception.EmptyUserListException;
+import ua.dovhopoliuk.springtask.exception.LoginNotUniqueException;
 import ua.dovhopoliuk.springtask.repository.UserRepository;
 import ua.dovhopoliuk.springtask.dto.*;
 import ua.dovhopoliuk.springtask.entity.*;
@@ -94,11 +94,6 @@ public class UserService implements UserDetailsService {
         } else {
             throw new UsernameNotFoundException(username);
         }
-    }
-
-    public Set<ConferenceDTO> getPlannedConferencesById(Long id) {
-        return userRepository.findUserById(id).getPlanedConferences().stream()
-                .map(ConferenceDTO::new).collect(Collectors.toSet());
     }
 
     public Long getIdOfCurrentUser() {

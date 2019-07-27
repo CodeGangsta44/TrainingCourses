@@ -16,8 +16,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString(exclude = "planedConferences")
-@EqualsAndHashCode(exclude = "planedConferences")
 
 @Entity
 @Table( name = "users",
@@ -39,23 +37,20 @@ public class User implements UserDetails {
 
     private String email;
 
+    @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     private Set<Role> roles;
-
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "registeredGuests")
-//    @JoinTable(name = "users_conferences",
-//            joinColumns = {@JoinColumn( name = "user_id")},
-//            inverseJoinColumns = { @JoinColumn(name = "conference_id") }
-//    )
-    private Set<Conference> planedConferences;
 
     @Column(nullable = false)
     private String password;
 
+    @Column(columnDefinition = "boolean default true")
     private boolean accountNonExpired;
+    @Column(columnDefinition = "boolean default true")
     private boolean accountNonLocked;
+    @Column(columnDefinition = "boolean default true")
     private boolean credentialsNonExpired;
+    @Column(columnDefinition = "boolean default true")
     private boolean enabled;
 
     @Override
