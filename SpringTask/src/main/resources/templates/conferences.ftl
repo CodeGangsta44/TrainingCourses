@@ -12,17 +12,16 @@
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 </head>
 <body ng-app="conferences" >
-
 <div class="container" style="margin-top: 30px" >
     <div class="row justify-content-center">
         <div class="col-md-12">
             <#include "fragments/header.ftl">
             <ng-view></ng-view>
+            <#include "fragments/footer.ftl">
         </div>
     </div>
 </div>
 <script type="text/javascript" src="/js/conferences.js"></script>
-<#--<script type="text/javascript" src="/js/reports.js"></script>-->
 </body>
 </html>
 

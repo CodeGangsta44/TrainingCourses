@@ -49,7 +49,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public void saveNewUser (User user){
+    public void saveUser (User user){
         log.info("SAVING USER");
 
         try {
@@ -102,5 +102,21 @@ public class UserService implements UserDetailsService {
 
     public User getCurrentUser() {
         return userRepository.findUserById(getIdOfCurrentUser());
+    }
+
+    public void updateUser(UserDTO userDTO) {
+        User target = userRepository.findUserById(userDTO.getId());
+        mapSourceToTarget(userDTO, target);
+
+        saveUser(target);
+    }
+
+    private void mapSourceToTarget(UserDTO source, User target) {
+        target.setSurname(source.getSurname());
+        target.setName(source.getName());
+        target.setPatronymic(source.getPatronymic());
+        target.setLogin(source.getLogin());
+        target.setEmail(source.getEmail());
+        target.setRoles(source.getRoles());
     }
 }

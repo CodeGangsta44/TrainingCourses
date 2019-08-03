@@ -19,6 +19,7 @@ public class UserDTO {
     private String patronymic;
     private String login;
     private String email;
+    private String avatarFileName;
     private Set<Role> roles;
 
     public UserDTO(User user) {
@@ -28,6 +29,7 @@ public class UserDTO {
         this.patronymic = user.getPatronymic();
         this.login = user.getLogin();
         this.email = user.getEmail();
+        this.avatarFileName = user.getAvatarFileName();
         this.roles = user.getRoles();
     }
 }

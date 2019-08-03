@@ -14,19 +14,19 @@ function showData(data, $scope) {
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'fragments/conferences_list.ftl',
+            templateUrl: '/fragments/conference/conferences_list',
             controller: 'ConferencesListCtrl'
         })
         .when('/add', {
-            templateUrl: 'fragments/conference_form.ftl',
+            templateUrl: '/fragments/conference/conference_form',
             controller: 'CreateConferenceCtrl'
         })
         .when('/:id', {
-            templateUrl: 'fragments/conference_info.ftl',
+            templateUrl: '/fragments/conference/conference_info',
             controller: 'ConferenceCtrl'
         })
         .when('/:id/addReport', {
-            templateUrl: 'fragments/report_form.ftl',
+            templateUrl: '/fragments/report/report_form',
             controller: 'CreateReportCtrl'
         })
 });

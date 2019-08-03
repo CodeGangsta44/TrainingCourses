@@ -43,7 +43,7 @@ public class Conference {
     private Set<Report> reports;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_conferences",
         joinColumns = {@JoinColumn( name = "conference_id")},
         inverseJoinColumns = { @JoinColumn(name = "user_id") }

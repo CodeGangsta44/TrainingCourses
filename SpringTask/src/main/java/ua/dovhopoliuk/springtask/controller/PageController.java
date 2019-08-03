@@ -2,15 +2,12 @@ package ua.dovhopoliuk.springtask.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class PageController {
-    @RequestMapping("/api")
-    public String mainPage() {
-        return "index.html";
-    }
 
     @RequestMapping("/registration")
     public String registrationPage() {
@@ -27,9 +24,9 @@ public class PageController {
         return "login";
     }
 
-    @RequestMapping("/all_users")
+    @RequestMapping("/users")
     public String userPage() {
-        return "all_users";
+        return "users";
     }
 
     @RequestMapping("/conferences")
@@ -43,7 +40,33 @@ public class PageController {
     }
 
     @RequestMapping("/")
+    public String mainPage() {
+        return "main";
+    }
+
+    @RequestMapping("/home")
     public String homePage() {
         return "home";
     }
+
+    @RequestMapping("/reportRequests")
+    public String reportRequestsPage() {
+        return "report_requests";
+    }
+
+    @RequestMapping("/notifications")
+    public String notifications() {
+        return "notifications";
+    }
+
+    @RequestMapping("/fragments/{directory}/{fileName}")
+    public String getFragment(@PathVariable String directory, @PathVariable String fileName) {
+        return "./fragments/" + directory + "/" + fileName;
+    }
+
+//    @RequestMapping("/img/{fileName}")
+//    public String getImage(@PathVariable String fileName) {
+//        System.out.println("IN CONTROLLER");
+//        return "img/" + fileName;
+//    }
 }

@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ua.dovhopoliuk.springtask.dto.ConferenceDTO;
 import ua.dovhopoliuk.springtask.dto.RegNoteDTO;
 import ua.dovhopoliuk.springtask.dto.UserDTO;
@@ -25,11 +26,15 @@ import java.util.Set;
 public class UserController {
     private final UserService userService;
     private final ReloadableResourceBundleMessageSource messageSource;
+    private final FileController fileController;
 
     @Autowired
-    public UserController(UserService userService, ReloadableResourceBundleMessageSource messageSource) {
+    public UserController(UserService userService,
+                          ReloadableResourceBundleMessageSource messageSource,
+                          FileController fileController) {
         this.userService = userService;
         this.messageSource = messageSource;
+        this.fileController = fileController;
     }
 
     @GetMapping
@@ -62,7 +67,7 @@ public class UserController {
         log.info(user.toString());
 
         try {
-            userService.saveNewUser(user);
+            userService.saveUser(user);
         } catch (LoginNotUniqueException ex) {
             note.setLogin("");
             ex.setNote(note);
@@ -73,15 +78,6 @@ public class UserController {
                 null,
                 LocaleContextHolder.getLocale());
 
-    }
-
-
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<RuntimeException> handleRuntimeException(RuntimeException ex) {
-        log.warn(ex.getMessage());
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(ex);
     }
 
     @GetMapping(value = "/me")
@@ -98,6 +94,40 @@ public class UserController {
     public Set<ConferenceDTO> getPlannedConferencesById(@PathVariable Long id) {
         //TODO implement this method
         return null;
+    }
+
+    @PutMapping(produces = "text/plain")
+    public String updateUser(@RequestBody UserDTO userDTO) {
+
+            userService.updateUser(userDTO);
+
+        return messageSource.getMessage("updating.success",
+                null,
+                LocaleContextHolder.getLocale());
+
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<RuntimeException> handleRuntimeException(RuntimeException ex) {
+        log.warn(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex);
+    }
+
+    @PostMapping(value = "{user}/changeAvatar")
+    public void changeAvatar(@PathVariable User user, @RequestParam(value = "file") MultipartFile multipartFile) {
+        System.out.println("Here");
+        System.out.println(multipartFile);
+        try {
+            String fileName = fileController.saveFile(multipartFile);
+            System.out.println(fileName);
+            user.setAvatarFileName(fileName);
+            userService.saveExistingUser(user);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

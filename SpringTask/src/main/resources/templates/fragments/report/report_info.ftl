@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as spring/>
 <div class="panel panel-default">
     <div class="panel-heading">Report</div>
     <div class="panel-body">

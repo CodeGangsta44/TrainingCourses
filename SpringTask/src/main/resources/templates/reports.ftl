@@ -18,6 +18,7 @@
         <div class="col-md-12">
             <#include "fragments/header.ftl">
             <ng-view></ng-view>
+            <#include "fragments/footer.ftl">
         </div>
     </div>
 </div>

@@ -78,6 +78,7 @@
                     <@spring.message "button.registration"/>
                 </button>
             </form>
+            <#include "fragments/footer.ftl">
         </div>
     </div>
 </div>

@@ -37,9 +37,14 @@ public class User implements UserDetails {
 
     private String email;
 
+    private String avatarFileName;
+
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "registeredGuests")
+    private Set<Conference> planedConferences;
 
     @Column(nullable = false)
     private String password;

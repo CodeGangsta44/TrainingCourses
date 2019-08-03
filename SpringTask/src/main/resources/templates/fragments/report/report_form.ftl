@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as spring/>
 <div class="panel panel-default">
     <div class="panel-heading">Create report</div>
     <div class="panel-body">
@@ -12,7 +13,7 @@
                        ng-model="form.topic">
             </div>
             <button type="submit" class="btn btn-success" style="margin-top:30px" ng-disabled="form.$invalid">
-                Create report
+                Propose report
             </button>
         </form>
     </div>

@@ -29,4 +29,8 @@ public class NotificationService {
                 .findAllByAddressedUser(
                         userService.getCurrentUser());
     }
+
+    public void deleteNotification(Notification notification) {
+        notificationRepository.delete(notification);
+    }
 }
