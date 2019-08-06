@@ -28,7 +28,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/users/*/", "/notifications", "/home", "/conferences").authenticated()
                 .antMatchers(HttpMethod.PUT, "/api/users").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/users/*/changeAvatar").authenticated()
-                .antMatchers("/api/users", "/all_users", "/reportRequests").hasAuthority("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/api/reportRequests/me").hasAuthority("SPEAKER")
+
+                .antMatchers(HttpMethod.GET, "/api/reportRequests/").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.GET, "/api/users", "/all_users", "/api/reportRequests").hasAuthority("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/users/*").hasAuthority("ADMIN")
                 .and()
                 .formLogin().loginPage("/login").usernameParameter("login").permitAll()
                 .and()

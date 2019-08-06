@@ -21,15 +21,21 @@ function getUserInfo($scope, $http) {
             (data)=>{
                 console.log(data);
                 Object.assign($scope.user, data.data);
+
+                if ($scope.user.roles.indexOf('SPEAKER') !== -1) {
+                    $scope.isSpeaker = true;
+                }
             },
             (error) => {
                 console.log(error.data);
             });
 }
 
-app.controller("AppCtrl", function ($scope, $http) {
+app.controller("HomeCtrl", function ($scope, $http) {
     $scope.user = {};
     $scope.editForm = {};
+
+    $scope.isSpeaker = false;
 
     getUserInfo($scope, $http);
 
@@ -55,7 +61,7 @@ app.controller("AppCtrl", function ($scope, $http) {
                 console.log(error);
             }
         )
-    }
+    };
 
     $scope.editProfile = () => {
         let resultMessageEl = document.getElementById('resultMessage');
@@ -82,4 +88,18 @@ app.controller("AppCtrl", function ($scope, $http) {
             }
         )
     }
+
+    $scope.toggleSpeakerSelection = () => {
+
+        if ($scope.isSpeaker) {
+            $scope.isSpeaker = false;
+            let index = $scope.user.roles.indexOf('SPEAKER');
+            $scope.user.roles.splice(index, 1);
+
+        } else {
+            $scope.isSpeaker = true;
+            $scope.user.roles.push('SPEAKER');
+        }
+
+    };
 });

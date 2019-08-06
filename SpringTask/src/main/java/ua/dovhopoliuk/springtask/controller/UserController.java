@@ -15,9 +15,11 @@ import ua.dovhopoliuk.springtask.dto.UserDTO;
 import ua.dovhopoliuk.springtask.entity.Role;
 import ua.dovhopoliuk.springtask.entity.User;
 import ua.dovhopoliuk.springtask.exception.LoginNotUniqueException;
+import ua.dovhopoliuk.springtask.exception.UserNotAuthenticatedException;
 import ua.dovhopoliuk.springtask.service.UserService;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Slf4j
@@ -45,9 +47,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces="text/plain")
     public String register(RegNoteDTO note){
+        System.out.println(note);
         Set<Role> roles = new HashSet<>();
         roles.add(Role.USER);
-        roles.add(Role.SPEAKER);
+        if (Boolean.parseBoolean(note.getIsSpeaker())) {
+            roles.add(Role.SPEAKER);
+        }
 
         log.info("{}", note);
         User user = User.builder()
@@ -56,6 +61,7 @@ public class UserController {
                 .patronymic(note.getPatronymic())
                 .login(note.getLogin())
                 .email(note.getEmail())
+                .avatarFileName("default.jpg")
                 .password(new BCryptPasswordEncoder().encode(note.getPassword()))
                 .roles(roles)
                 .accountNonExpired(true)
@@ -78,6 +84,10 @@ public class UserController {
                 null,
                 LocaleContextHolder.getLocale());
 
+    }
+    @GetMapping(value = "/myRoles")
+    public Set<Role> getRolesOfCurrentUser() {
+        return userService.getCurrentUser().getRoles();
     }
 
     @GetMapping(value = "/me")
@@ -128,6 +138,12 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @DeleteMapping(value = "{user}")
+    public void deleteUser(@PathVariable User user) {
+        System.out.println(user);
+        userService.deleteUser(user);
     }
 
 }

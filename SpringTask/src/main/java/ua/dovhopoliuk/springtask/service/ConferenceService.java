@@ -8,6 +8,7 @@ import ua.dovhopoliuk.springtask.dto.ReportDTO;
 import ua.dovhopoliuk.springtask.entity.Conference;
 import ua.dovhopoliuk.springtask.entity.Report;
 import ua.dovhopoliuk.springtask.entity.User;
+import ua.dovhopoliuk.springtask.exception.ConferenceNotValidException;
 import ua.dovhopoliuk.springtask.repository.ConferenceRepository;
 
 import java.time.LocalDateTime;
@@ -35,8 +36,20 @@ public class ConferenceService {
         this.reportRequestService = reportRequestService;
     }
 
-    public List<Conference> getAllConferences() {
-        return this.conferenceRepository.findAll();
+    public List<Conference> getAllValidConferences() {
+        return this.conferenceRepository.findAllByApprovedIsTrueAndFinishedIsFalse();
+    }
+
+    public List<Conference> getAllNotApprovedConferences() {
+        return this.conferenceRepository.findAllByApprovedIsFalse();
+    }
+
+    public List<Conference> getAllFinishedConferences() {
+        return this.conferenceRepository.findAllByFinishedIsTrue();
+    }
+
+    public List<Conference> getAllConferencesByCurrentUser() {
+        return this.conferenceRepository.findAllByRegisteredGuestsContains(userService.getCurrentUser());
     }
 
     public Conference getConferenceById(Long id){
@@ -89,6 +102,10 @@ public class ConferenceService {
         Conference conference = conferenceRepository.findConferenceById(conferenceId);
         User user = userService.getUserById(userId);
 
+        if (!conference.isApproved() || conference.isFinished()) {
+            throw new ConferenceNotValidException();
+        }
+
         if (!isUserRegistered(conference)) {
             conference.getRegisteredGuests().add(user);
         } else {
@@ -121,12 +138,17 @@ public class ConferenceService {
 
     public void requestReport(Long conferenceId, Report report) {
         Conference conference = conferenceRepository.findConferenceById(conferenceId);
-        User speaker = userService.getCurrentUser();
+        report.setConference(conference);
 
-        report.setSpeaker(speaker);
+        System.out.println(report.getSpeaker());
+
+        if (Objects.isNull(report.getSpeaker())) {
+            report.setSpeaker(userService.getCurrentUser());
+        }
+
         reportService.saveReport(report);
 
-        reportRequestService.createReportRequest(report, conference);
+        reportRequestService.createReportRequest(report);
     }
 
     public void deleteReport(Long conferenceId, Long reportId) {
@@ -136,5 +158,14 @@ public class ConferenceService {
         conference.getReports().remove(report);
 
         conferenceRepository.save(conference);
+    }
+
+    public void approve(Conference conference) {
+        conference.setApproved(true);
+        conferenceRepository.save(conference);
+    }
+
+    public void reject(Conference conference) {
+        conferenceRepository.delete(conference);
     }
 }

@@ -16,7 +16,7 @@
 <div class="container" style="margin-top: 30px">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <#include "fragments/header.ftl">
+            <#include "../header.ftl">
 
             <div style="display: flex; margin-top: 20px">
                 <div style="flex: 1;  align-self:flex-start">
@@ -137,6 +137,17 @@
                                        required
                                        ng-model="user.email">
                             </div>
+
+                            <div class="form-group">
+                                <label id="inputIsSpeakerLabel" for="exampleInputIsSpeaker"><@spring.message "label.speaker"/></label>
+                                <input type="checkbox"
+                                       class="form-control"
+                                       id="exampleInputIsSpeaker"
+                                       placeholder="<@spring.message "label.speaker"/>"
+                                       ng-model="isSpeaker"
+                                       ng-checked="isSpeaker"
+                                       ng-click="toggleSpeakerSelection()">
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -164,10 +175,10 @@
 
                 </div>
             </div>
-            <#include "fragments/footer.ftl">
+            <#include "../footer.ftl">
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/js/home.js"></script>
+<script type="text/javascript" src="/public/js/home.js"></script>
 </body>
 </html>

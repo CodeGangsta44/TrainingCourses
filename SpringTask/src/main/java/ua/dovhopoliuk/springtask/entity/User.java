@@ -16,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode
 
 @Entity
 @Table( name = "users",
@@ -44,17 +45,27 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "registeredGuests")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Conference> planedConferences;
 
+    @EqualsAndHashCode.Exclude
     @Column(nullable = false)
     private String password;
 
+    @EqualsAndHashCode.Exclude
     @Column(columnDefinition = "boolean default true")
     private boolean accountNonExpired;
+
+    @EqualsAndHashCode.Exclude
     @Column(columnDefinition = "boolean default true")
     private boolean accountNonLocked;
+
+    @EqualsAndHashCode.Exclude
     @Column(columnDefinition = "boolean default true")
     private boolean credentialsNonExpired;
+
+    @EqualsAndHashCode.Exclude
     @Column(columnDefinition = "boolean default true")
     private boolean enabled;
 

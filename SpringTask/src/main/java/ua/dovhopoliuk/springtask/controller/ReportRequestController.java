@@ -7,6 +7,7 @@ import ua.dovhopoliuk.springtask.entity.ReportRequest;
 import ua.dovhopoliuk.springtask.service.ReportRequestService;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @RestController
@@ -20,8 +21,16 @@ public class ReportRequestController {
     }
 
     @GetMapping
-    public List<ReportRequestDTO> getAllReportRequests() {
+    public List<ReportRequestDTO> getRequestedReports() {
         return reportRequestService.getAllReportRequests().stream()
+                .filter(Predicate.not(ReportRequest::isApprovedByModerator))
+                .map(ReportRequestDTO::new)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/me")
+    public List<ReportRequestDTO> getProposedReports() {
+        return reportRequestService.getProposedReports().stream()
                 .map(ReportRequestDTO::new).collect(Collectors.toList());
     }
 

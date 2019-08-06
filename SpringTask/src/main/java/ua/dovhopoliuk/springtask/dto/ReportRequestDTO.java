@@ -13,11 +13,9 @@ import ua.dovhopoliuk.springtask.entity.ReportRequest;
 public class ReportRequestDTO {
     private Long id;
     private ReportDTO report;
-    private ConferenceDTO conference;
 
     public ReportRequestDTO(ReportRequest reportRequest) {
         this.id = reportRequest.getId();
         this.report = new ReportDTO(reportRequest.getReport());
-        this.conference = new ConferenceDTO(reportRequest.getConference());
     }
 }

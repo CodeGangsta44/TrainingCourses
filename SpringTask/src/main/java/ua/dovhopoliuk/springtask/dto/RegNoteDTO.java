@@ -19,4 +19,6 @@ public class RegNoteDTO {
 
     private String email;
     private String password;
+
+    private String isSpeaker;
 }

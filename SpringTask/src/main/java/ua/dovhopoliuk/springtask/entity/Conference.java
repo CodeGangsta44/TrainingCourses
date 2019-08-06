@@ -39,17 +39,28 @@ public class Conference {
     @Column(name = "event_address", nullable = false)
     private String eventAddress;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER,
+            orphanRemoval = true,
+            cascade = CascadeType.ALL)
+    @JoinTable(name = "conferences_reports",
+            joinColumns = {@JoinColumn( name = "conference_id")},
+            inverseJoinColumns = { @JoinColumn(name = "reports_id")})
     private Set<Report> reports;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_conferences",
         joinColumns = {@JoinColumn( name = "conference_id")},
-        inverseJoinColumns = { @JoinColumn(name = "user_id") }
+        inverseJoinColumns = { @JoinColumn(name = "user_id")}
     )
     private Set<User> registeredGuests;
 
     @Column(nullable = false)
     private String description;
+
+    @Column(nullable = false)
+    private boolean approved;
+
+    @Column(nullable = false)
+    private boolean finished;
 }

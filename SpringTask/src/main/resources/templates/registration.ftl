@@ -74,6 +74,15 @@
                            required
                            ng-model="auth.password">
                 </div>
+                <div class="form-group">
+                    <label id="inputIsSpeakerLabel" for="exampleInputIsSpeaker"><@spring.message "label.speaker"/></label>
+                    <input type="checkbox"
+                           class="form-control"
+                           id="exampleInputIsSpeaker"
+                           placeholder="<@spring.message "label.speaker"/>"
+                           ng-model="auth.isSpeaker"
+                           ng-true-value="true" ng-false-value="false">
+                </div>
                 <button type="submit" class="btn btn-success" style="margin-top:30px" ng-disabled="form.$invalid">
                     <@spring.message "button.registration"/>
                 </button>

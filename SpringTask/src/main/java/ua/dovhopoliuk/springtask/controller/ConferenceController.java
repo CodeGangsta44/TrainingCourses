@@ -27,7 +27,30 @@ public class ConferenceController {
 
     @GetMapping
     public Set<ConferenceDTO> getAllConferences() {
-        return conferenceService.getAllConferences().stream().map(ConferenceDTO::new).collect(Collectors.toSet());
+        return conferenceService.getAllValidConferences().stream()
+                .map(ConferenceDTO::new)
+                .collect(Collectors.toSet());
+    }
+
+    @GetMapping(value = "/requests")
+    public Set<ConferenceDTO> getAllConferenceRequests() {
+        return conferenceService.getAllNotApprovedConferences().stream()
+                .map(ConferenceDTO::new)
+                .collect(Collectors.toSet());
+    }
+
+    @GetMapping(value = "/finished")
+    public Set<ConferenceDTO> getAllFinishedConferences() {
+        return conferenceService.getAllFinishedConferences().stream()
+                .map(ConferenceDTO::new)
+                .collect(Collectors.toSet());
+    }
+
+    @GetMapping(value = "/me")
+    public  Set<ConferenceDTO> getAllConferencesByCurrentUser(){
+        return conferenceService.getAllConferencesByCurrentUser().stream()
+                .map(ConferenceDTO::new)
+                .collect(Collectors.toSet());
     }
 
     @GetMapping(value = "{id}")
@@ -81,7 +104,8 @@ public class ConferenceController {
     }
 
     @PostMapping(value = "{conferenceId}/addReport")
-    public void addReport(@PathVariable Long conferenceId, Report report) {
+    public void addReport(@PathVariable Long conferenceId, @RequestBody Report report) {
+        System.out.println(report);
         conferenceService.requestReport(conferenceId, report);
     }
 
@@ -89,5 +113,15 @@ public class ConferenceController {
     @DeleteMapping(value = "{conferenceId}/reports/{reportId}")
     public void deleteReport(@PathVariable Long conferenceId, @PathVariable Long reportId) {
         conferenceService.deleteReport(conferenceId, reportId);
+    }
+
+    @PostMapping(value = "/{conference}/processRequest")
+    public void processRequest(@PathVariable Conference conference, @RequestBody boolean answer) {
+        System.out.println(answer);
+        if (answer) {
+            conferenceService.approve(conference);
+        } else {
+            conferenceService.reject(conference);
+        }
     }
 }

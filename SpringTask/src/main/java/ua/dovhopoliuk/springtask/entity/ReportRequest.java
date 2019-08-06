@@ -22,6 +22,7 @@ public class ReportRequest {
     @ManyToOne(fetch = FetchType.EAGER)
     private Report report;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Conference conference;
+    private boolean approvedBySpeaker;
+
+    private boolean approvedByModerator;
 }

@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class PageController {
 
+    @RequestMapping("/header")
+    public String header() {
+        return "./fragments/header";
+    }
+
     @RequestMapping("/registration")
     public String registrationPage() {
         return "registration";
@@ -61,12 +66,7 @@ public class PageController {
 
     @RequestMapping("/fragments/{directory}/{fileName}")
     public String getFragment(@PathVariable String directory, @PathVariable String fileName) {
+        System.out.println("./fragments/" + directory + "/" + fileName);
         return "./fragments/" + directory + "/" + fileName;
     }
-
-//    @RequestMapping("/img/{fileName}")
-//    public String getImage(@PathVariable String fileName) {
-//        System.out.println("IN CONTROLLER");
-//        return "img/" + fileName;
-//    }
 }

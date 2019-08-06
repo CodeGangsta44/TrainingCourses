@@ -23,6 +23,10 @@ public class Report {
     private String topic;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "conference_id")
+    private Conference conference;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User speaker;
 }

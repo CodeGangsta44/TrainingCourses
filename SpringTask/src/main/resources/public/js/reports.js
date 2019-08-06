@@ -5,15 +5,37 @@ function showData(data, $scope) {
     Object.assign($scope, data.data);
 }
 
+function showListOfReports(data, $scope) {
+    $scope.reports = data.data;
+}
+
+function getListOfReports($http, $scope) {
+    $http.get('api/reports/')
+        .then (
+            (data) => {
+                console.log(data);
+                showListOfReports(data, $scope)
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+}
+
 
 app.config(function ($routeProvider) {
+
     $routeProvider
+        .when('/', {
+            templateUrl: '/fragments/report/report_list',
+            controller: 'ReportListCtrl'
+        })
         .when('/add', {
-            templateUrl: 'report_form.ftl',
+            templateUrl: '/fragments/report/report_form',
             controller: 'CreateReportCtrl'
         })
         .when('/:id', {
-            templateUrl: 'report_info.ftl',
+            templateUrl: '/fragments/report/report_info',
             controller: 'ReportCtrl'
         })
 });
@@ -39,6 +61,66 @@ app.config(function ($routeProvider) {
 //
 // });
 //
+
+app.controller("ReportListCtrl", function ($scope, $http) {
+    $scope.reports = [];
+    $scope.editForm = {};
+
+    getListOfReports($http, $scope);
+
+    $scope.editReport = (report) => {
+        Object.assign($scope.editForm, report);
+    };
+
+    $scope.saveChanges = () => {
+        let resultMessageEl = document.getElementById('resultMessage');
+        $http({
+            method: "PUT",
+            url: "/api/reports",
+            data: JSON.stringify($scope.editForm),
+            headers: {"Content-Type" : "application/json"}
+        }).then(
+            (data) => {
+                console.log(data);
+
+                getListOfReports($http, $scope);
+                resultMessageEl.className = 'alert alert-success';
+                resultMessageEl.innerText = data.data;
+                resultMessageEl.style.visibility='visible';
+            },
+            (error) => {
+                console.log(error);
+                resultMessageEl.className = 'alert alert-warning';
+                resultMessageEl.innerText = error.data.localizedMessage;
+                resultMessageEl.style.visibility='visible';
+            }
+        );
+    };
+
+    $scope.prepareToDeleteReport = (id) => {
+        console.log(id);
+        $scope.reportIdToDelete = id;
+    };
+
+    $scope.cancelReportDeleting = () => {
+        delete $scope.reportIdToDelete;
+    };
+
+    $scope.deleteReport = () => {
+        console.log($scope.reportIdToDelete);
+        $http.delete("api/reports/" + $scope.reportIdToDelete)
+            .then(
+                (data) => {
+                    console.log(data);
+                    getListOfReports($http, $scope);
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+    };
+});
+
 app.controller("ReportCtrl", function ($scope, $http, $routeParams) {
 
     $http.get('api/reports/' + $routeParams.id)
@@ -58,8 +140,8 @@ app.controller("CreateReportCtrl", function ($scope, $http, $routeParams) {
         $http({
             method: "POST",
             url: "/api/conferences/" + $routeParams.id + "/addReport",
-            data: $.param(form),
-            headers: { "Content-Type" : "application/x-www-form-urlencoded" }
+            data: JSON.stringify($scope.form),
+            headers: { "Content-Type" : "application/json" }
         }).then(
             (data) => {
                 console.log(data);

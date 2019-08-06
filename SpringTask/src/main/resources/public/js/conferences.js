@@ -10,12 +10,41 @@ function showData(data, $scope) {
     console.log($scope.registrationAction);
 }
 
+function getConferencesList($scope, $http) {
+    $http.get("/api/conferences" + $scope.path)
+        .then(
+            (data)=>{
+                console.log('SUCCESS');
+                console.log(data);
+                $scope.conferences = data.data;
+            },
+            (error) => {
+                console.log('FAIL');
+                console.log(data);
+                console.log(error.data);
+                resultMessageEl.style.color = 'red';
+                $scope.message = error.data.message;
+            })
+}
+
 
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl: '/fragments/conference/conferences_list',
             controller: 'ConferencesListCtrl'
+        })
+        .when('/requests', {
+            templateUrl: '/fragments/conference/conference_requests_list',
+            controller: 'ConferenceRequestsListCtrl'
+        })
+        .when('/finished', {
+            templateUrl: '/fragments/conference/finished_conferences_list',
+            controller: 'FinishedConferencesListCtrl'
+        })
+        .when('/me', {
+            templateUrl: '/fragments/conference/conferences_list',
+            controller: 'MyConferencesListCtrl'
         })
         .when('/add', {
             templateUrl: '/fragments/conference/conference_form',
@@ -31,25 +60,48 @@ app.config(function ($routeProvider) {
         })
 });
 
+function answerRequest($scope, $http, id, answer) {
+    console.log(answer);
+    $http({
+        method: "POST",
+        url: "/api/conferences/" + id + "/processRequest",
+        data: answer,
+        headers: { "Content-Type" : "application/json" }
+    }).then(
+        (data) => {
+            console.log(data);
+            getConferencesList($scope, $http)
+        },
+        (error) => {
+            console.log(error);
+        }
+    )
+}
+
 app.controller("ConferencesListCtrl", function ($scope, $http) {
         $scope.conferences = [];
+        $scope.path = '/';
+        getConferencesList($scope, $http);
+});
 
-        $http.get("/api/conferences")
-            .then(
-                (data)=>{
-                    console.log('SUCCESS');
-                    console.log(data);
-                    $scope.conferences = data.data;
-                },
-                (error) => {
-                    console.log('FAIL');
-                    console.log(data);
-                    console.log(error.data);
-                    resultMessageEl.style.color = 'red';
-                    $scope.message = error.data.message;
-                })
+app.controller("ConferenceRequestsListCtrl", function ($scope, $http) {
+    $scope.conferences = [];
+    $scope.path = '/requests';
+    getConferencesList($scope, $http);
 
+    $scope.processRequest = (id, answer) => answerRequest.call(this, $scope, $http, id, answer);
+});
 
+app.controller("FinishedConferencesListCtrl", function ($scope, $http) {
+    $scope.conferences = [];
+    $scope.path = '/finished';
+    getConferencesList($scope, $http);
+});
+
+app.controller("MyConferencesListCtrl", function ($scope, $http) {
+    $scope.conferences = [];
+    $scope.path = '/me';
+    getConferencesList($scope, $http);
 });
 
 app.controller("ConferenceCtrl", function ($scope, $http, $routeParams) {
@@ -80,7 +132,6 @@ app.controller("CreateConferenceCtrl", function ($scope, $http) {
     $scope.form = {};
     
     $scope.sendForm = function(form){
-        // form.eventDateTime = new Date(form.eventDateTime);
         console.log(form);
         $http({
             method: "POST",
@@ -106,8 +157,8 @@ app.controller("CreateReportCtrl", function ($scope, $http, $routeParams) {
         $http({
             method: "POST",
             url: "/api/conferences/" + $routeParams.id + "/addReport",
-            data: $.param(form),
-            headers: { "Content-Type" : "application/x-www-form-urlencoded" }
+            data: JSON.stringify(form),
+            headers: { "Content-Type" : "application/json" }
         }).then(
             (data) => {
                 console.log(data);

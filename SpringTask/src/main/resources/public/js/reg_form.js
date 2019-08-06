@@ -24,8 +24,12 @@ angular.module("registration_form",[])
 
         $scope.sendForm = function(auth){
 
+            console.dir(auth);
+
             Object.keys($scope.auth)
                 .forEach(key => setListenerForInput(key, $scope));
+
+            console.dir($.param(auth));
 
             $http({
                 method: "POST",

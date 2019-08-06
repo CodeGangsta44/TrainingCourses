@@ -7,13 +7,14 @@ app.config(function ($routeProvider) {
             templateUrl: '/fragments/reportRequests/report_requests_list',
             controller: 'ReportRequestsListCtrl'
         })
+        .when('/me', {
+            templateUrl: '/fragments/reportRequests/report_proposes_list',
+            controller: 'ReportProposesListCtrl'
+        })
 });
 
 function getListOfRequests($scope, $http) {
-
-    $scope.report_requests = [];
-
-    $http.get("/api/reportRequests")
+    $http.get("/api/reportRequests" + $scope.path)
         .then(
             (data)=>{
                 console.log(data);
@@ -25,29 +26,44 @@ function getListOfRequests($scope, $http) {
             })
 }
 
+function answerRequest($http , $scope, id, answer) {
+    console.log(answer);
+    $http({
+        method: "POST",
+        url: "/api/reportRequests/" + id,
+        data: answer,
+        headers: { "Content-Type" : "application/json" }
+    }).then(
+        (data) => {
+            console.log(data);
+            console.dir($scope.report_requests);
+
+            getListOfRequests($scope, $http)
+        },
+        (error) => {
+            console.log(error);
+        }
+    )
+}
+
 app.controller("ReportRequestsListCtrl", function ($scope, $http) {
     console.log("IN CONTROLLER");
+    $scope.report_requests = [];
+    $scope.path = '/';
 
-    $scope.processRequest = (id, answer) => {
-        console.log(answer);
-        $http({
-            method: "POST",
-            url: "/api/reportRequests/" + id,
-            data: answer,
-            headers: { "Content-Type" : "application/json" }
-        }).then(
-            (data) => {
-                console.log(data);
-                console.dir($scope.report_requests);
-
-                getListOfRequests($scope, $http)
-            },
-            (error) => {
-                console.log(error);
-            }
-        )
-    };
+    $scope.processRequest = (id, answer) => answerRequest.call(this, $http, $scope, id, answer);
 
     getListOfRequests($scope, $http)
+
+});
+
+app.controller("ReportProposesListCtrl", function ($scope, $http) {
+    console.log("IN CONTROLLER");
+    $scope.report_requests = [];
+    $scope.path = '/me';
+
+    $scope.processRequest = (id, answer) => answerRequest.call(this, $http, $scope, id, answer);
+
+    getListOfRequests($scope, $http, '/me')
 
 });
