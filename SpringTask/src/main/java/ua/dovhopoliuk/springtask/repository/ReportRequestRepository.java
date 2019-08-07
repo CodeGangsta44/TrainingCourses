@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface ReportRequestRepository extends JpaRepository<ReportRequest, Long> {
     List<ReportRequest> findAllByApprovedByModeratorIsTrue();
-    void deleteAllByReport(Report report);
+    void deleteAllBySpeaker(User speaker);
 }

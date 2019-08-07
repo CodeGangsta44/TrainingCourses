@@ -12,10 +12,17 @@ import ua.dovhopoliuk.springtask.entity.ReportRequest;
 
 public class ReportRequestDTO {
     private Long id;
-    private ReportDTO report;
+
+    private String topic;
+
+    private ConferenceDTO conference;
+
+    private UserDTO speaker;
 
     public ReportRequestDTO(ReportRequest reportRequest) {
         this.id = reportRequest.getId();
-        this.report = new ReportDTO(reportRequest.getReport());
+        this.topic = reportRequest.getTopic();
+        this.conference = new ConferenceDTO(reportRequest.getConference());
+        this.speaker = new UserDTO(reportRequest.getSpeaker());
     }
 }

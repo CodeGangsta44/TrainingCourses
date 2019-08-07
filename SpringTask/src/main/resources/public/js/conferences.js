@@ -190,7 +190,7 @@ app.controller("CreateReportCtrl", function ($scope, $http, $routeParams) {
         console.log(form);
         $http({
             method: "POST",
-            url: "/api/conferences/" + $routeParams.id + "/addReport",
+            url: "/api/reportRequests/request/" + $routeParams.id,
             data: JSON.stringify(form),
             headers: { "Content-Type" : "application/json" }
         }).then(

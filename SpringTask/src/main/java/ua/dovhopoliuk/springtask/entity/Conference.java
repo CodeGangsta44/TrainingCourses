@@ -27,7 +27,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class Conference {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "conference_id",nullable = false)
     private Long id;
 
     @Column(nullable = false)
@@ -40,11 +40,8 @@ public class Conference {
     private String eventAddress;
 
     @OneToMany(fetch = FetchType.EAGER,
-            orphanRemoval = true,
+            mappedBy = "conference",
             cascade = CascadeType.ALL)
-    @JoinTable(name = "conferences_reports",
-            joinColumns = {@JoinColumn( name = "conference_id")},
-            inverseJoinColumns = { @JoinColumn(name = "reports_id")})
     private Set<Report> reports;
 
     @JsonIgnore

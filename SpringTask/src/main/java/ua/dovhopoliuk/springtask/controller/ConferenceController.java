@@ -107,13 +107,6 @@ public class ConferenceController {
                 .map(ReportDTO::new).collect(Collectors.toSet());
     }
 
-    @PostMapping(value = "{conferenceId}/addReport")
-    public void addReport(@PathVariable Long conferenceId, @RequestBody Report report) {
-        System.out.println(report);
-        conferenceService.requestReport(conferenceId, report);
-    }
-
-
     @DeleteMapping(value = "{conferenceId}/reports/{reportId}")
     public void deleteReport(@PathVariable Long conferenceId, @PathVariable Long reportId) {
         conferenceService.deleteReport(conferenceId, reportId);

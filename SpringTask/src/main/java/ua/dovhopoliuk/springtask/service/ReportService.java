@@ -49,7 +49,6 @@ public class ReportService {
     }
 
     public void deleteReport(Report report) {
-        reportRequestRepository.deleteAllByReport(report);
 
         if (!Objects.isNull(report.getConference())) {
             report.getConference().getReports().remove(report);

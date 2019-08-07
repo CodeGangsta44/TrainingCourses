@@ -3,6 +3,7 @@ package ua.dovhopoliuk.springtask.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ua.dovhopoliuk.springtask.dto.ReportRequestDTO;
+import ua.dovhopoliuk.springtask.entity.Conference;
 import ua.dovhopoliuk.springtask.entity.ReportRequest;
 import ua.dovhopoliuk.springtask.service.ReportRequestService;
 
@@ -42,5 +43,10 @@ public class ReportRequestController {
         } else {
             reportRequestService.reject(reportRequest);
         }
+    }
+    @PostMapping(value = "/request/{conference}")
+    public void processRequest(@PathVariable Conference conference, @RequestBody ReportRequest reportRequest) {
+        reportRequest.setConference(conference);
+        reportRequestService.createReportRequest(reportRequest);
     }
 }

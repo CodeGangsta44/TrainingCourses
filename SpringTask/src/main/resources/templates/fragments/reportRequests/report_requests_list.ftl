@@ -15,8 +15,8 @@
             <tbody>
             <tr ng-repeat="item in report_requests | orderBy: 'id'">
                 <td>{{item.id}}</td>
-                <td>{{item.report.topic}}</td>
-                <td>{{item.report.speaker.surname}} {{item.report.speaker.name}}</td>
+                <td>{{item.topic}}</td>
+                <td>{{item.speaker.surname}} {{item.speaker.name}}</td>
                 <td>{{item.conference.topic}}</td>
                 <td>
                     <button class="btn btn-success" style="margin-top:5px" ng-click="processRequest(item.id, true)">

@@ -16,7 +16,7 @@ import lombok.*;
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "report_id", nullable = false)
     private Long id;
 
     @Column(nullable = false)

@@ -140,21 +140,6 @@ public class ConferenceService {
         return conferenceRepository.findConferenceById(conferenceId).getReports();
     }
 
-    public void requestReport(Long conferenceId, Report report) {
-        Conference conference = conferenceRepository.findConferenceById(conferenceId);
-        report.setConference(conference);
-
-        System.out.println(report.getSpeaker());
-
-        if (Objects.isNull(report.getSpeaker())) {
-            report.setSpeaker(userService.getCurrentUser());
-        }
-
-        reportService.saveReport(report);
-
-        reportRequestService.createReportRequest(report);
-    }
-
     public void deleteReport(Long conferenceId, Long reportId) {
         Conference conference = conferenceRepository.findConferenceById(conferenceId);
         Report report = reportService.getReportById(reportId);

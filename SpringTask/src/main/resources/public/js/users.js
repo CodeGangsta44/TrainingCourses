@@ -351,7 +351,7 @@ app.controller("UserListCtrl", function ($scope, $http) {
         console.log($scope.chosenConferenceId);
         $http({
             method: "POST",
-            url: "/api/conferences/" + $scope.chosenConferenceId + "/addReport",
+            url: "/api/reportRequests/request/" + $scope.chosenConferenceId,
             data: JSON.stringify($scope.reportProposeForm),
             headers: { "Content-Type" : "application/json" }
         }).then(

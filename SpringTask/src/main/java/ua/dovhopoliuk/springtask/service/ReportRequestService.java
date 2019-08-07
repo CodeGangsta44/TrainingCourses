@@ -9,6 +9,7 @@ import ua.dovhopoliuk.springtask.repository.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,13 +31,10 @@ public class ReportRequestService {
         this.userService = userService;
     }
 
-    public void createReportRequest(Report report) {
-
-        ReportRequest reportRequest = ReportRequest.builder()
-                .report(report)
-                .approvedBySpeaker(false)
-                .approvedByModerator(false)
-                .build();
+    public void createReportRequest(ReportRequest reportRequest) {
+        if (Objects.isNull(reportRequest.getSpeaker())) {
+            reportRequest.setSpeaker(userService.getCurrentUser());
+        }
 
         reportRequestRepository.save(reportRequest);
         approve(reportRequest);
@@ -48,47 +46,41 @@ public class ReportRequestService {
 
     public List<ReportRequest> getProposedReports () {
         User speaker = userService.getCurrentUser();
-        System.out.println(speaker);
-        System.out.println("GG");
 
         return reportRequestRepository.findAllByApprovedByModeratorIsTrue().stream()
-                .peek(request -> System.out.println(request.getReport().getSpeaker()))
-                .filter(request -> speaker.equals(request.getReport().getSpeaker()))
+                .filter(request -> speaker.equals(request.getSpeaker()))
                 .collect(Collectors.toList());
     }
 
     public void approve(ReportRequest reportRequest) {
         User currentUser = userService.getCurrentUser();
-        System.out.println(currentUser.toString());
-
-        System.out.println(currentUser.equals(reportRequest.getReport().getSpeaker()));
 
         if (currentUser.getRoles().contains(Role.MODER)) {
-            System.out.println("IS MODER");
             reportRequest.setApprovedByModerator(true);
         }
 
-        if (currentUser.equals(reportRequest.getReport().getSpeaker())) {
-            System.out.println("IS SPEAKER");
+        if (currentUser.equals(reportRequest.getSpeaker())) {
             reportRequest.setApprovedBySpeaker(true);
         }
 
         reportRequestRepository.save(reportRequest);
 
         if (reportRequest.isApprovedByModerator() && reportRequest.isApprovedBySpeaker()) {
-            System.out.println("APPROVING");
             approveRequest(reportRequest);
         }
     }
 
     private void approveRequest(ReportRequest reportRequest) {
-        Conference conference = reportRequest.getReport().getConference();
-        Report report = reportRequest.getReport();
+        Conference conference = reportRequest.getConference();
+        Report report = Report.builder()
+                .topic(reportRequest.getTopic())
+                .conference(reportRequest.getConference())
+                .speaker(reportRequest.getSpeaker()).build();
         User speaker = report.getSpeaker();
 
         conference.getReports().add(report);
 
-        Notification notification = createNotification(report, speaker, conference, "approved");
+        Notification notification = createNotification(reportRequest, speaker, conference, "approved");
 
         notificationRepository.save(notification);
         conferenceRepository.save(conference);
@@ -96,23 +88,22 @@ public class ReportRequestService {
     }
 
     public void reject(ReportRequest reportRequest) {
-        Conference conference = reportRequest.getReport().getConference();
-        Report report = reportRequest.getReport();
-        User speaker = report.getSpeaker();
+        Conference conference = reportRequest.getConference();
+        User speaker = reportRequest.getSpeaker();
 
-        Notification notification = createNotification(report, speaker, conference, "rejected");
+        Notification notification = createNotification(reportRequest, speaker, conference, "rejected");
 
         notificationRepository.save(notification);
         reportRequestRepository.delete(reportRequest);
     }
 
-    private Notification createNotification(Report report, User speaker, Conference conference, String status) {
+    private Notification createNotification(ReportRequest reportRequest, User speaker, Conference conference, String status) {
         List<String> topic_values = new ArrayList<>();
         List<String> message_values = new ArrayList<>();
 
-        topic_values.add(report.getTopic());
+        topic_values.add(reportRequest.getTopic());
         message_values.add(speaker.getName());
-        message_values.add(report.getTopic());
+        message_values.add(reportRequest.getTopic());
         message_values.add(conference.getTopic());
 
         return Notification.builder()

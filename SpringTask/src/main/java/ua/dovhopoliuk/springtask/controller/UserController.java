@@ -86,6 +86,7 @@ public class UserController {
                 LocaleContextHolder.getLocale());
 
     }
+
     @GetMapping(value = "/myRoles")
     public Set<Role> getRolesOfCurrentUser() {
         return userService.getCurrentUser().getRoles();
