@@ -42,6 +42,10 @@ app.config(function ($routeProvider) {
             templateUrl: '/fragments/conference/finished_conferences_list',
             controller: 'FinishedConferencesListCtrl'
         })
+        .when('/notFinished', {
+            templateUrl: '/fragments/conference/not_finished_conferences_list',
+            controller: 'NotFinishedConferencesListCtrl'
+        })
         .when('/me', {
             templateUrl: '/fragments/conference/conferences_list',
             controller: 'MyConferencesListCtrl'
@@ -90,6 +94,36 @@ app.controller("ConferenceRequestsListCtrl", function ($scope, $http) {
     getConferencesList($scope, $http);
 
     $scope.processRequest = (id, answer) => answerRequest.call(this, $scope, $http, id, answer);
+});
+
+app.controller("NotFinishedConferencesListCtrl", function ($scope, $http) {
+    $scope.conferences = [];
+    $scope.path = '/notFinished';
+    getConferencesList($scope, $http);
+
+    $scope.prepareForConferenceFinishing = (id) => {
+        $scope.conferenceIdToFinish = id;
+    };
+
+    $scope.cancelConferenceFinishing = () => {
+        delete $scope.conferenceIdToFinish;
+    };
+
+    $scope.finishConference = () => {
+        console.log($scope.numberOfVisitedGuests);
+        $http({
+            method: "PUT",
+            url: "/api/conferences/" + $scope.conferenceIdToFinish + "/finish",
+            data: $scope.numberOfVisitedGuests,
+            headers: {"Content-Type" : "application/json"}
+        }).then(
+            (data) => {
+                console.log(data);
+                getConferencesList($scope, $http);
+            },
+            (error) => console.log(error)
+        )
+    }
 });
 
 app.controller("FinishedConferencesListCtrl", function ($scope, $http) {

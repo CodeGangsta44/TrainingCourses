@@ -14,6 +14,8 @@ public interface ConferenceRepository extends JpaRepository<Conference, Long> {
 
     List<Conference> findAll();
 
+    List<Conference> findAllByRegisteredGuestsContainsAndApprovedIsTrueAndFinishedIsFalse(User user);
+
     List<Conference> findAllByRegisteredGuestsContains(User user);
 
     List<Conference> findAllByReportsContaining(Report report);
@@ -23,4 +25,6 @@ public interface ConferenceRepository extends JpaRepository<Conference, Long> {
     List<Conference> findAllByApprovedIsFalse();
 
     List<Conference> findAllByFinishedIsTrue();
+
+    List<Conference> findAllByFinishedIsFalseAndApprovedIsTrue();
 }

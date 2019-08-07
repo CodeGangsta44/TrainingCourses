@@ -12,14 +12,14 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link user-option" href="/home"><h6><@spring.message "label.home"/></h6><span class="sr-only">(current)</span></a>
+                <a class="nav-link user-option" href="/users#!/me"><h6><@spring.message "label.home"/></h6><span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item user-option">
                 <a class="nav-link" href="/notifications"><h6><@spring.message "label.notifications"/></h6></a>
             </li>
 
             <li class="nav-item dropdown user-option">
-                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <h6><@spring.message "label.conferences"/></h6>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -29,7 +29,7 @@
             </li>
 
             <li class="nav-item dropdown speaker-option moder-option">
-                <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <h6><@spring.message "label.reports"/></h6>
                 </a>
                 <div class="dropdown-menu " aria-labelledby="navbarDropdown">

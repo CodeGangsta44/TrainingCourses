@@ -2,10 +2,7 @@ package ua.dovhopoliuk.springtask.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ua.dovhopoliuk.springtask.dto.ConferenceDTO;
-import ua.dovhopoliuk.springtask.dto.FullConferenceDTO;
-import ua.dovhopoliuk.springtask.dto.RegisteredGuestDTO;
-import ua.dovhopoliuk.springtask.dto.ReportDTO;
+import ua.dovhopoliuk.springtask.dto.*;
 import ua.dovhopoliuk.springtask.entity.Conference;
 import ua.dovhopoliuk.springtask.entity.Report;
 import ua.dovhopoliuk.springtask.service.ConferenceService;
@@ -40,8 +37,15 @@ public class ConferenceController {
     }
 
     @GetMapping(value = "/finished")
-    public Set<ConferenceDTO> getAllFinishedConferences() {
+    public Set<FinishedConferenceDTO> getAllFinishedConferences() {
         return conferenceService.getAllFinishedConferences().stream()
+                .map(FinishedConferenceDTO::new)
+                .collect(Collectors.toSet());
+    }
+
+    @GetMapping(value = "/notFinished")
+    public Set<ConferenceDTO> getAllNotFinishedConferences() {
+        return conferenceService.getAllNotFinishedConferences().stream()
                 .map(ConferenceDTO::new)
                 .collect(Collectors.toSet());
     }
@@ -123,5 +127,10 @@ public class ConferenceController {
         } else {
             conferenceService.reject(conference);
         }
+    }
+
+    @PutMapping(value = "/{conference}/finish")
+    public void finishConference(@PathVariable Conference conference, @RequestBody Long numberOfVisitedGuests){
+        conferenceService.finish(conference, numberOfVisitedGuests);
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.dovhopoliuk.springtask.dto.ConferenceDTO;
 import ua.dovhopoliuk.springtask.dto.RegNoteDTO;
+import ua.dovhopoliuk.springtask.dto.SpeakerStatisticsDTO;
 import ua.dovhopoliuk.springtask.dto.UserDTO;
 import ua.dovhopoliuk.springtask.entity.Role;
 import ua.dovhopoliuk.springtask.entity.User;
@@ -144,6 +145,11 @@ public class UserController {
     public void deleteUser(@PathVariable User user) {
         System.out.println(user);
         userService.deleteUser(user);
+    }
+
+    @GetMapping(value = "/speakerStatistics/{speaker}")
+    public SpeakerStatisticsDTO getSpeakerStatistics(@PathVariable User speaker) {
+        return userService.getSpeakerStatistics(speaker);
     }
 
 }

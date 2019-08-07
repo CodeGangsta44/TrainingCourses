@@ -63,4 +63,6 @@ public class Conference {
 
     @Column(nullable = false)
     private boolean finished;
+
+    private Long numberOfVisitedGuests;
 }

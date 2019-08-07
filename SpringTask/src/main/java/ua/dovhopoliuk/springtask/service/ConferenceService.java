@@ -48,8 +48,12 @@ public class ConferenceService {
         return this.conferenceRepository.findAllByFinishedIsTrue();
     }
 
+    public List<Conference> getAllNotFinishedConferences() {
+        return this.conferenceRepository.findAllByFinishedIsFalseAndApprovedIsTrue();
+    }
+
     public List<Conference> getAllConferencesByCurrentUser() {
-        return this.conferenceRepository.findAllByRegisteredGuestsContains(userService.getCurrentUser());
+        return this.conferenceRepository.findAllByRegisteredGuestsContainsAndApprovedIsTrueAndFinishedIsFalse(userService.getCurrentUser());
     }
 
     public Conference getConferenceById(Long id){
@@ -167,5 +171,11 @@ public class ConferenceService {
 
     public void reject(Conference conference) {
         conferenceRepository.delete(conference);
+    }
+
+    public void finish(Conference conference, Long numberOfVisitedGuests) {
+        conference.setNumberOfVisitedGuests(numberOfVisitedGuests);
+        conference.setFinished(true);
+        conferenceRepository.save(conference);
     }
 }

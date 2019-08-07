@@ -1,6 +1,16 @@
 package ua.dovhopoliuk.springtask.entity;
 
+import lombok.*;
+
 import javax.persistence.*;
+
+@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@EqualsAndHashCode
 
 @Entity
 @Table(name = "votes")

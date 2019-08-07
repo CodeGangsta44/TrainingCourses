@@ -19,9 +19,7 @@ import ua.dovhopoliuk.springtask.dto.*;
 import ua.dovhopoliuk.springtask.entity.*;
 
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -153,5 +151,27 @@ public class UserService implements UserDetailsService {
 
         notificationRepository.deleteAllByAddressedUser(user);
         userRepository.delete(user);
+    }
+
+    public SpeakerStatisticsDTO getSpeakerStatistics(User speaker) {
+        List<Report> speakerReports = reportRepository.findAllBySpeaker(speaker);
+
+        Set<Conference> speakerConferences = new HashSet<>();
+
+        Set<Report> completedSpeakerReports = speakerReports.stream()
+                .filter(report -> report.getConference().isFinished())
+                .peek(report -> speakerConferences.add(report.getConference()))
+                .collect(Collectors.toSet());
+
+        Long totalReports = (long) completedSpeakerReports.size();
+        Long totalConferences = (long) speakerConferences.size();
+        Long totalPeople = speakerConferences.stream()
+                .reduce(0L, (left, right) -> left + right.getNumberOfVisitedGuests(), Long::sum);
+
+        return  SpeakerStatisticsDTO.builder()
+                .totalReports(totalReports)
+                .totalConferences(totalConferences)
+                .totalPeople(totalPeople)
+                .build();
     }
 }
