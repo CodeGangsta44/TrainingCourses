@@ -3,28 +3,16 @@ package ua.dovhopoliuk.springtask.exception;
 import ua.dovhopoliuk.springtask.dto.RegNoteDTO;
 
 public class LoginNotUniqueException extends RuntimeException {
-    private RegNoteDTO note;
-    private String localizedMessage;
-
-    public LoginNotUniqueException(String message, String localizedMessage) {
+    private RegNoteDTO regNoteDTO;
+    public LoginNotUniqueException(String message) {
         super(message);
-        this.localizedMessage = localizedMessage;
     }
 
-    public void setNote(RegNoteDTO note) {
-        this.note = note;
+    public RegNoteDTO getRegNoteDTO() {
+        return regNoteDTO;
     }
 
-    public RegNoteDTO getNote() {
-        return note;
-    }
-
-    @Override
-    public String getLocalizedMessage() {
-        return localizedMessage;
-    }
-
-    public void setLocalizedMessage(String localizedMessage) {
-        this.localizedMessage = localizedMessage;
+    public void setRegNoteDTO(RegNoteDTO regNoteDTO) {
+        this.regNoteDTO = regNoteDTO;
     }
 }

@@ -45,7 +45,7 @@ public class ReportRequestController {
         }
     }
     @PostMapping(value = "/request/{conference}")
-    public void processRequest(@PathVariable Conference conference, @RequestBody ReportRequest reportRequest) {
+    public void createReportRequest(@PathVariable Conference conference, @RequestBody ReportRequest reportRequest) {
         reportRequest.setConference(conference);
         reportRequestService.createReportRequest(reportRequest);
     }

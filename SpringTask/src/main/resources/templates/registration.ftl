@@ -28,6 +28,7 @@
                            placeholder="<@spring.message "label.surname"/>"
                            required
                            ng-model="auth.surname">
+                    <span id="surnameMessages" class="validationMessages" hidden>TEST</span>
                 </div>
                 <div class="form-group">
                     <label id="inputNameLabel" for="exampleInputName"><@spring.message "label.name"/></label>
@@ -37,6 +38,7 @@
                            placeholder="<@spring.message "label.name"/>"
                            required
                            ng-model="auth.name">
+                    <span id="nameMessages" class="validationMessages" hidden></span>
                 </div>
                 <div class="form-group">
                     <label id="inputPatronymicLabel" for="exampleInputPatronymic"><@spring.message "label.patronymic"/></label>
@@ -46,6 +48,7 @@
                            placeholder="<@spring.message "label.patronymic"/>"
                            required
                            ng-model="auth.patronymic">
+                    <span id="patronymicMessages" class="validationMessages" hidden></span>
                 </div>
                 <div class="form-group">
                     <label id="inputLoginLabel" for="exampleInputLogin"><@spring.message "label.login"/></label>
@@ -55,6 +58,7 @@
                            placeholder="<@spring.message "label.login"/>"
                            required
                            ng-model="auth.login">
+                    <span id="loginMessages" class="validationMessages" hidden></span>
                 </div>
                 <div class="form-group">
                     <label id="inputEmailLabel" for="exampleInputEmail"><@spring.message "label.email"/></label>
@@ -64,6 +68,7 @@
                            placeholder="<@spring.message "label.email"/>"
                            required
                            ng-model="auth.email">
+                    <span id="emailMessages" class="validationMessages" hidden></span>
                 </div>
                 <div class="form-group">
                     <label id="inputPasswordLabel" for="exampleInputPassword"><@spring.message "label.password"/></label>
@@ -73,6 +78,7 @@
                            placeholder="<@spring.message "label.password"/>"
                            required
                            ng-model="auth.password">
+                    <span id="passwordMessages" class="validationMessages" hidden></span>
                 </div>
                 <div class="form-group">
                     <label id="inputIsSpeakerLabel" for="exampleInputIsSpeaker"><@spring.message "label.speaker"/></label>

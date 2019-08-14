@@ -11,6 +11,7 @@ public class PageController {
 
     @RequestMapping("/header")
     public String header() {
+        System.out.println("Header");
         return "./fragments/header";
     }
 

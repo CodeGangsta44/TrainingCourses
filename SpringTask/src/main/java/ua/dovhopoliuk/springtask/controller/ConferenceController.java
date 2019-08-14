@@ -9,6 +9,7 @@ import ua.dovhopoliuk.springtask.service.ConferenceService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -23,10 +24,30 @@ public class ConferenceController {
     }
 
     @GetMapping
-    public Set<ConferenceDTO> getAllConferences() {
-        return conferenceService.getAllValidConferences().stream()
+    public Set<ConferenceDTO> getValidConferences(@RequestParam(required = false) Integer page,
+                                                  @RequestParam(required = false) Integer capacity) {
+        System.out.println("IN METHOD!!!!");
+        if (Objects.isNull(page) || Objects.isNull(capacity)) {
+            return conferenceService.getAllValidConferences().stream()
+                    .map(ConferenceDTO::new)
+                    .collect(Collectors.toSet());
+        }
+
+        return conferenceService.getConferencesByPage(page, capacity).stream()
                 .map(ConferenceDTO::new)
                 .collect(Collectors.toSet());
+    }
+
+//    @GetMapping
+//    public Set<ConferenceDTO> getConferencesByPage(@RequestParam Integer currentPage, @RequestParam Integer currentCapacity) {
+//        return conferenceService.getConferencesByPage(currentPage, currentCapacity).stream()
+//                .map(ConferenceDTO::new)
+//                .collect(Collectors.toSet());
+//    }
+
+    @GetMapping("/totalNumber")
+    public Integer getTotalNumberOfValidConferences() {
+        return conferenceService.getTotalNumberOfValidConferences();
     }
 
     @GetMapping(value = "/requests")

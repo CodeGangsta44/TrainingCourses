@@ -1,6 +1,8 @@
 package ua.dovhopoliuk.springtask.entity;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,6 +24,7 @@ public class Notification {
     private Long id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User addressedUser;
 
     @Column(name = "notification_date_time", nullable = false)

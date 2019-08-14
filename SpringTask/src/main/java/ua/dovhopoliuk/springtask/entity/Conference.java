@@ -40,8 +40,7 @@ public class Conference {
     private String eventAddress;
 
     @OneToMany(fetch = FetchType.EAGER,
-            mappedBy = "conference",
-            cascade = CascadeType.ALL)
+            mappedBy = "conference")
     private Set<Report> reports;
 
     @JsonIgnore

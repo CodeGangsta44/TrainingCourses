@@ -1,6 +1,8 @@
 package ua.dovhopoliuk.springtask.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import ua.dovhopoliuk.springtask.dto.RegisteredGuestDTO;
@@ -22,18 +24,15 @@ public class ConferenceService {
     private ConferenceRepository conferenceRepository;
     private UserService userService;
     private ReportService reportService;
-    private ReportRequestService reportRequestService;
 
     @Autowired
     ConferenceService(ConferenceRepository conferenceRepository,
                       UserService userService,
-                      ReportService reportService,
-                      ReportRequestService reportRequestService) {
+                      ReportService reportService) {
 
         this.conferenceRepository = conferenceRepository;
         this.userService = userService;
         this.reportService = reportService;
-        this.reportRequestService = reportRequestService;
     }
 
     public List<Conference> getAllValidConferences() {
@@ -42,6 +41,15 @@ public class ConferenceService {
 
     public List<Conference> getAllNotApprovedConferences() {
         return this.conferenceRepository.findAllByApprovedIsFalse();
+    }
+
+    public List<Conference> getConferencesByPage(Integer page, Integer capacity) {
+        Pageable pageRequest = PageRequest.of(page - 1, capacity);
+        return conferenceRepository.findAllByApprovedIsTrueAndFinishedIsFalse(pageRequest);
+    }
+
+    public Integer getTotalNumberOfValidConferences() {
+        return conferenceRepository.countAllByApprovedIsTrueAndFinishedIsFalse().intValue();
     }
 
     public List<Conference> getAllFinishedConferences() {
@@ -76,21 +84,19 @@ public class ConferenceService {
 
     private void copyUpdatableFields(Conference oldConf, Conference newConf) {
 
-        // TODO null -> @Optional, Object.isNull()
-
-        if (newConf.getTopic() != null) {
+        if (!Objects.isNull(newConf.getTopic())) {
             oldConf.setTopic(newConf.getTopic());
         }
 
-        if (newConf.getEventDateTime() != null) {
+        if (!Objects.isNull(newConf.getEventDateTime())) {
             oldConf.setEventDateTime(newConf.getEventDateTime());
         }
 
-        if (newConf.getEventAddress() != null) {
+        if (!Objects.isNull(newConf.getEventAddress())) {
             oldConf.setEventAddress(newConf.getEventAddress());
         }
 
-        if (newConf.getDescription() != null) {
+        if (!Objects.isNull(newConf.getDescription())) {
             oldConf.setDescription(newConf.getDescription());
         }
     }
@@ -102,20 +108,17 @@ public class ConferenceService {
     }
 
     public void changeRegistration(Long conferenceId) {
-        Long userId = userService.getIdOfCurrentUser();
         Conference conference = conferenceRepository.findConferenceById(conferenceId);
-        User user = userService.getUserById(userId);
+        User user = userService.getCurrentUser();
 
         if (!conference.isApproved() || conference.isFinished()) {
             throw new ConferenceNotValidException();
         }
-
-        if (!isUserRegistered(conference)) {
+        if (!conference.getRegisteredGuests().contains(user)) {
             conference.getRegisteredGuests().add(user);
         } else {
             conference.getRegisteredGuests().remove(user);
         }
-
         conferenceRepository.save(conference);
         userService.saveExistingUser(user);
     }

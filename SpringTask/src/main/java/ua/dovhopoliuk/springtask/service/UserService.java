@@ -28,26 +28,15 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final ReloadableResourceBundleMessageSource messageSource;
     private final ReportRepository reportRepository;
-    private final ReportRequestRepository reportRequestRepository;
-    private final ConferenceRepository conferenceRepository;
-    private final NotificationRepository notificationRepository;
-    public final ReportService reportService;
 
     @Autowired
     public UserService(UserRepository userRepository,
                        ReloadableResourceBundleMessageSource messageSource,
                        ReportRepository reportRepository,
-                       ReportRequestRepository reportRequestRepository,
-                       ConferenceRepository conferenceRepository,
-                       NotificationRepository notificationRepository,
                        ReportService reportService) {
         this.userRepository = userRepository;
         this.messageSource = messageSource;
         this.reportRepository = reportRepository;
-        this.reportRequestRepository = reportRequestRepository;
-        this.conferenceRepository = conferenceRepository;
-        this.notificationRepository = notificationRepository;
-        this.reportService = reportService;
     }
 
     public Set<UserDTO> getAllUsers() {
@@ -83,11 +72,8 @@ public class UserService implements UserDetailsService {
 
             if (errorCode == 1062) {
                 log.warn("Login already exists");
-                String localizedMessage = messageSource.getMessage("exception.login.not.unique",
-                        null,
-                        LocaleContextHolder.getLocale());
 
-                throw new LoginNotUniqueException("Entered login is not unique, please try again", localizedMessage);
+                throw new LoginNotUniqueException("Entered login is not unique, please try again");
             }
 
             throw ex;
@@ -139,17 +125,7 @@ public class UserService implements UserDetailsService {
         target.setRoles(source.getRoles());
     }
 
-    @Transactional
     public void deleteUser(User user) {
-
-        List<Report> userReports = reportRepository.findAllBySpeaker(user);
-
-        userReports.forEach(reportService::deleteReport);
-
-        List<Conference> userConferences = conferenceRepository.findAllByRegisteredGuestsContains(user);
-        userConferences.forEach(conference -> conference.getRegisteredGuests().remove(user));
-
-        notificationRepository.deleteAllByAddressedUser(user);
         userRepository.delete(user);
     }
 

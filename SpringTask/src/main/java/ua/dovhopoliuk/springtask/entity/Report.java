@@ -3,6 +3,8 @@ package ua.dovhopoliuk.springtask.entity;
 import javax.persistence.*;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -24,9 +26,11 @@ public class Report {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "conference_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Conference conference;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User speaker;
 }

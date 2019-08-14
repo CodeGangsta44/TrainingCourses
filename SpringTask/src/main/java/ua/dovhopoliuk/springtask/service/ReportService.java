@@ -16,16 +16,10 @@ import java.util.Set;
 @Service
 public class ReportService {
     private ReportRepository reportRepository;
-    private ConferenceRepository conferenceRepository;
-    private ReportRequestRepository reportRequestRepository;
 
     @Autowired
-    public ReportService(ReportRepository reportRepository,
-                         ConferenceRepository conferenceRepository,
-                         ReportRequestRepository reportRequestRepository) {
+    public ReportService(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
-        this.conferenceRepository = conferenceRepository;
-        this.reportRequestRepository = reportRequestRepository;
     }
 
     public List<Report> getAllReports() {

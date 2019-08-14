@@ -16,18 +16,18 @@ import java.util.stream.Collectors;
 public class ReportRequestService {
     private ReportRequestRepository reportRequestRepository;
     private NotificationRepository notificationRepository;
-    private ConferenceRepository conferenceRepository;
+    private ReportRepository reportRepository;
     private UserService userService;
 
     @Autowired
     public ReportRequestService(ReportRequestRepository reportRequestRepository,
                                 NotificationRepository notificationRepository,
-                                ConferenceRepository conferenceRepository,
+                                ReportRepository reportRepository,
                                 UserService userService) {
 
         this.reportRequestRepository = reportRequestRepository;
         this.notificationRepository = notificationRepository;
-        this.conferenceRepository = conferenceRepository;
+        this.reportRepository = reportRepository;
         this.userService = userService;
     }
 
@@ -70,7 +70,8 @@ public class ReportRequestService {
         }
     }
 
-    private void approveRequest(ReportRequest reportRequest) {
+    @Transactional
+    public void approveRequest(ReportRequest reportRequest) {
         Conference conference = reportRequest.getConference();
         Report report = Report.builder()
                 .topic(reportRequest.getTopic())
@@ -82,11 +83,12 @@ public class ReportRequestService {
 
         Notification notification = createNotification(reportRequest, speaker, conference, "approved");
 
+        reportRepository.save(report);
         notificationRepository.save(notification);
-        conferenceRepository.save(conference);
         reportRequestRepository.delete(reportRequest);
     }
 
+    @Transactional
     public void reject(ReportRequest reportRequest) {
         Conference conference = reportRequest.getConference();
         User speaker = reportRequest.getSpeaker();
