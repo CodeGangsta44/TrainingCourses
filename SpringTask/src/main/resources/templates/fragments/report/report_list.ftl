@@ -1,15 +1,15 @@
 <#import "/spring.ftl" as spring/>
 <div class="panel panel-default">
-    <div class="panel-heading">Report requests</div>
+    <div class="panel-heading"><@spring.message "label.reports"/></div>
     <div class="panel-body">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Topic</th>
-                <th>Speaker</th>
-                <th>Conference</th>
-                <th>Actions</th>
+                <th><@spring.message "column.id"/></th>
+                <th><@spring.message "label.topic"/></th>
+                <th><@spring.message "label.speaker"/></th>
+                <th><@spring.message "label.conference"/></th>
+                <th><@spring.message "label.actions"/></th>
             </tr>
             </thead>
             <tbody>
@@ -46,7 +46,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Report</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"><@spring.message "label.edit.report"/></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -81,14 +81,14 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Confirm deleting</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"><@spring.message "label.confirm.deleting"/></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                                 ng-click="cancelReportDeleting()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        Are you sure?
+                        <@spring.message "label.deleting.question"/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"

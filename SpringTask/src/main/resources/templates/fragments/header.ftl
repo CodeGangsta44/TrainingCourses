@@ -25,6 +25,9 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item user-option" href="/conferences"><@spring.message "label.all.conferences"/></a>
                     <a class="dropdown-item user-option" href="/conferences#!/me"><@spring.message "label.planned.conferences"/></a>
+                    <a class="dropdown-item moder-option" href="/conferences#!/notFinished"><@spring.message "label.not.finished.conferences"/></a>
+                    <a class="dropdown-item moder-option" href="/conferences#!/finished"><@spring.message "label.finished.conferences"/></a>
+                    <a class="dropdown-item moder-option" href="/conferences#!/requests"><@spring.message "label.conferences.requests"/></a>
                 </div>
             </li>
 
@@ -33,7 +36,8 @@
                     <h6><@spring.message "label.reports"/></h6>
                 </a>
                 <div class="dropdown-menu " aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item speaker-option" href="#"><@spring.message "label.planned.reports"/></a>
+                    <a class="dropdown-item moder-option" href="/reports#!/"><@spring.message "label.all.reports"/></a>
+                    <a class="dropdown-item speaker-option" href="/reports#!/me"><@spring.message "label.planned.reports"/></a>
                     <a class="dropdown-item speaker-option" href="/reportRequests#!/me"><@spring.message "label.report.propositions"/></a>
                     <a class="dropdown-item moder-option" href="/reportRequests"><@spring.message "label.report.requests"/></a>
                 </div>
@@ -46,7 +50,7 @@
 
         </ul>
 
-        <span class="glyphicon glyphicon-log-out" aria-hidden="true" style="margin-left: 5px; float: right">
+        <span class="user-option" aria-hidden="true" style="margin-left: 5px; float: right">
             <a href="/logout"><@spring.message "label.logout"/></a>
         </span>
     </div>

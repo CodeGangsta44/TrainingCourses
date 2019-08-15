@@ -74,7 +74,7 @@ app.config(function ($routeProvider) {
             controller: 'NotFinishedConferencesListCtrl'
         })
         .when('/me', {
-            templateUrl: '/fragments/conference/conferences_list',
+            templateUrl: '/fragments/conference/planned_conferences_list',
             controller: 'MyConferencesListCtrl'
         })
         .when('/add', {
@@ -111,12 +111,12 @@ function answerRequest($scope, $http, id, answer) {
 
 app.controller("ConferencesListCtrl", function ($scope, $http) {
     $scope.conferences = [];
+    $scope.form = {};
     $scope.path = '/';
     $scope.currentPage = 1;
     $scope.numberOfPages = 0;
     $scope.currentCapacity = 'All';
     getConferencesList($scope, $http);
-    // getConferencesPage($scope, $http);
     getTotalConferencesNumber($scope, $http);
 
     $scope.selectPage = (number) => {
@@ -192,6 +192,27 @@ app.controller("ConferencesListCtrl", function ($scope, $http) {
             $scope.checkButtonsConditions();
             getConferencesPage($scope, $http);
         }
+    };
+
+    $scope.prepareToProposeConference = () => {
+      $scope.form = {};
+    };
+
+    $scope.proposeConference = function(){
+        console.log($scope.form);
+        $http({
+            method: "POST",
+            url: "/api/conferences",
+            data: $.param($scope.form),
+            headers: { "Content-Type" : "application/x-www-form-urlencoded" }
+        }).then(
+            (data) => {
+                console.log(data);
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
     }
 });
 
@@ -248,16 +269,21 @@ app.controller("MyConferencesListCtrl", function ($scope, $http) {
 app.controller("ConferenceCtrl", function ($scope, $http, $routeParams) {
     $scope.reports = [];
     $scope.registeredGuests = [];
+    $scope.form = {};
 
     let regButton = document.getElementById('registerToConference');
 
-    $http.get('api/conferences/' + $routeParams.id)
-        .then (
-            (data) => showData(data, $scope),
-            (error) => {
-                console.log(error);
-            }
-        );
+    $scope.getInfo = () =>  {
+        $http.get('api/conferences/' + $routeParams.id)
+            .then (
+                (data) => showData(data, $scope),
+                (error) => {
+                    console.log(error);
+                }
+            );
+    };
+
+    $scope.getInfo();
 
     regButton.onclick = () => {
         $http.get($scope.action)
@@ -266,7 +292,29 @@ app.controller("ConferenceCtrl", function ($scope, $http, $routeParams) {
                 (error) => console.log(error)
             );
 
-    }
+    };
+
+    $scope.prepareToProposeReport = () => {
+        $scope.form = {};
+    };
+
+    $scope.proposeReport = () => {
+        console.log($scope.form);
+        $http({
+            method: "POST",
+            url: "/api/reportRequests/request/" + $routeParams.id,
+            data: JSON.stringify($scope.form),
+            headers: { "Content-Type" : "application/json" }
+        }).then(
+            (data) => {
+                console.log(data);
+                $scope.getInfo();
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+    };
 });
 
 app.controller("CreateConferenceCtrl", function ($scope, $http) {

@@ -1,6 +1,6 @@
 <#import "/spring.ftl" as spring/>
 <div class="panel panel-default">
-    <div class="panel-heading">Report requests</div>
+    <div class="panel-heading"><@spring.message "label.notifications"/></div>
     <div class="panel-body">
         <ul style="list-style: none; padding-left: 0">
             <li ng-repeat="item in notifications | orderBy: 'notificationDateTime'">

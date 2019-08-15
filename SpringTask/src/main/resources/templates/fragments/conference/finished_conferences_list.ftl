@@ -1,15 +1,15 @@
 <#import "/spring.ftl" as spring/>
 <div class="panel panel-default">
-    <div class="panel-heading">Conferences</div>
+    <div class="panel-heading"><@spring.message "label.finished.conferences"/></div>
     <div class="panel-body">
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Topic</th>
-                <th>Date and Time</th>
-                <th>Address</th>
-                <th>Percent of registered people</th>
+                <th><@spring.message "column.id"/></th>
+                <th><@spring.message "label.topic"/></th>
+                <th><@spring.message "label.date.and.time"/></th>
+                <th><@spring.message "label.address"/></th>
+                <th><@spring.message "label.percent.registered.guests"/></th>
             </tr>
             </thead>
             <tbody>

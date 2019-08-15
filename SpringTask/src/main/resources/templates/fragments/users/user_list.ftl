@@ -68,7 +68,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"><@spring.message "label.edit.profile"/></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -152,14 +152,14 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Confirm deleting</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"><@spring.message "label.confirm.deleting"/></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                                 ng-click="cancelUserDeleting()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        Are you sure?
+                        <@spring.message "label.deleting.question"/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
@@ -180,7 +180,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Report proposing</h5>
+                        <h5 class="modal-title" id="exampleModalLabel"><@spring.message "label.report.proposition"/></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"
                                 ng-click="cancelUserDeleting()">
                             <span aria-hidden="true">&times;</span>
@@ -191,7 +191,7 @@
                             <div class="form-group">
 
                                 <div class="form-group">
-                                    <label id="inputConferenceLabel" for="conferenceSelect">Conference</label>
+                                    <label id="inputConferenceLabel" for="conferenceSelect"><@spring.message "label.conference"/></label>
                                     <select class="form-control"
                                             name="conferenceSelect"
                                             id="conferenceSelect"
@@ -203,7 +203,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label id="inputTopicLabel" for="topicInput">Topic</label>
+                                    <label id="inputTopicLabel" for="topicInput"><@spring.message "label.topic"/></label>
                                     <input type="text"
                                            class="form-control"
                                            id="topicInput"

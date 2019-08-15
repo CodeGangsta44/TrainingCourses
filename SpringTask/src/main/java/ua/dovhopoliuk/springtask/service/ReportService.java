@@ -16,14 +16,20 @@ import java.util.Set;
 @Service
 public class ReportService {
     private ReportRepository reportRepository;
+    private UserService userService;
 
     @Autowired
-    public ReportService(ReportRepository reportRepository) {
+    public ReportService(ReportRepository reportRepository, UserService userService) {
         this.reportRepository = reportRepository;
+        this.userService = userService;
     }
 
     public List<Report> getAllReports() {
         return reportRepository.findAll();
+    }
+
+    public List<Report> getAllReportsByCurrentUser() {
+        return reportRepository.findAllBySpeaker(userService.getCurrentUser());
     }
 
     public Report getReportById(Long id) {

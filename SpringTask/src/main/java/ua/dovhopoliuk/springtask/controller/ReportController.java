@@ -26,6 +26,12 @@ public class ReportController {
                 .map(ReportDTO::new).collect(Collectors.toList());
     }
 
+    @GetMapping("/me")
+    public List<ReportDTO> getAllReportsOfCurrentUser() {
+        return reportService.getAllReportsByCurrentUser().stream()
+                .map(ReportDTO::new).collect(Collectors.toList());
+    }
+
     @PutMapping
     public void updateReport(@RequestBody ReportDTO reportDTO) {
         reportService.updateReport(reportDTO);

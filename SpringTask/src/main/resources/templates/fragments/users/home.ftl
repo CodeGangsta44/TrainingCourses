@@ -10,7 +10,7 @@
 
         <div class="card" style="flex: 1; align-self:flex-start">
             <div class="card-header" >
-                <div style="display: inline-block"><h5>Info</h5></div>
+                <div style="display: inline-block"><h5><@spring.message "label.info"/></h5></div>
                 <button type="button" class="btn btn-success"  data-toggle="modal" data-target="#editModal"
                         style="float: right"><@spring.message "button.edit"/></button>
             </div>
@@ -43,7 +43,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Change photo</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><@spring.message "label.change.photo"/></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -52,9 +52,9 @@
                     <input type="file"  file="file" required>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><@spring.message "button.close"/></button>
                     <button class="btn btn-success" ng-click="changeAvatar()">
-                        Upload
+                        <@spring.message "button.upload"/>
                     </button>
                 </div>
             </div>
@@ -66,7 +66,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+                    <h5 class="modal-title" id="exampleModalLabel"><@spring.message "label.edit.profile"/></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -132,9 +132,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><@spring.message "button.close"/></button>
                     <button class="btn btn-success" ng-click="editProfile()">
-                        Save
+                        <@spring.message "button.save"/>
                     </button>
                 </div>
             </div>

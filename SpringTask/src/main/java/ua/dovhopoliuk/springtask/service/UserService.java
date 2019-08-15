@@ -32,8 +32,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     public UserService(UserRepository userRepository,
                        ReloadableResourceBundleMessageSource messageSource,
-                       ReportRepository reportRepository,
-                       ReportService reportService) {
+                       ReportRepository reportRepository) {
         this.userRepository = userRepository;
         this.messageSource = messageSource;
         this.reportRepository = reportRepository;
